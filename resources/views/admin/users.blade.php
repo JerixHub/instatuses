@@ -201,14 +201,7 @@ Users Masterlist - BHIMS
 								@if($user->id == 1)
 									<tr>
 										<td>
-											<div class="form-check">
-												<label class="form-check-label">
-													<input class="form-check-input" type="checkbox" value="">
-													<span class="form-check-sign">
-														<span class="check"></span>
-													</span>
-												</label>
-											</div>
+											
 										</td>
 										<td>{{ $user->name }}</td>
 										<td>{{ $user->email }}</td>
@@ -220,14 +213,7 @@ Users Masterlist - BHIMS
 												No
 											@endif
 										</td>
-										<td class="td-actions text-right">
-											<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-												<i class="material-icons">edit</i>
-											</button>
-											<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-												<i class="material-icons">close</i>
-											</button>
-										</td>
+										<td></td>
 									</tr>
 								@else
 									<tr>
