@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('title')
-Admin Dashboard
+Dashboard - BHIMS
 @endsection
 
 @section('sidenav')

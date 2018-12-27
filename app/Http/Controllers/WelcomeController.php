@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
+use App\Barangay;
 
 class WelcomeController extends Controller
 {
@@ -33,6 +34,7 @@ class WelcomeController extends Controller
 
     public function index()
     {
-    	return view('welcome');
+        $barangays = Barangay::all();
+    	return view('welcome', compact('barangays'));
     }
 }

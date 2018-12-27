@@ -74,15 +74,9 @@
                         <div class="form-group">
                             <label for="barangay">Barangay health center of:</label>
                             <select name="barangay" id="barangay" class="form-control">
-                                <option value="1">Brillante(Poblacion)</option>
-                                <option value="1">Brillante(Poblacion)</option>
-                                <option value="1">Brillante(Poblacion)</option>
-                                <option value="1">Brillante(Poblacion)</option>
-                                <option value="1">Brillante(Poblacion)</option>
-                                <option value="1">Brillante(Poblacion)</option>
-                                <option value="1">Brillante(Poblacion)</option>
-                                <option value="1">Brillante(Poblacion)</option>
-                                <option value="1">Brillante(Poblacion)</option>
+                                @foreach($barangays as $barangay)
+                                    <option value="{{ $barangay->id }}">{{$barangay->name}}</option>
+                                @endforeach
                             </select>
                         </div>
 

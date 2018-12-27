@@ -18,6 +18,11 @@ class CreateBarangaysTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        Schema::table('users', function( Blueprint $table ){
+            $table->unsignedInteger('barangay_id')->nullable()->after('is_admin');
+            $table->foreign('barangay_id')->references('id')->on('barangays');
+        });
     }
 
     /**
@@ -28,5 +33,8 @@ class CreateBarangaysTable extends Migration
     public function down()
     {
         Schema::dropIfExists('barangays');
+        Schema::table('users', function(Blueprint $table){
+            $table->dropColumn('barangay_id');
+        });
     }
 }
