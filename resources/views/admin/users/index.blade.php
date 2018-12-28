@@ -4,6 +4,21 @@
 Users Masterlist - BHIMS
 @endsection
 
+@section('style')
+<style>
+	.user-pagination .page-item.active .page-link{
+		border-radius: 50%;
+	}
+
+	.user-pagination .page-link:hover{
+		border-radius: 50%;
+	}
+	#edit-user-form .form-check.form-check-inline {
+	    margin-left: 20px;
+	}
+</style>
+@endsection
+
 @section('sidenav')
 <li class="nav-item">
 	<a class="nav-link" href="/admin">
@@ -183,9 +198,10 @@ Users Masterlist - BHIMS
 					<a href="/admin/users/create" class="btn btn-info">
 						<i class="material-icons">person_add</i> Add New User
 					</a>
+
 				</div>
 				<div class="card-body">
-					<table class="table">
+					<table class="table table-shopping">
 						<thead>
 							<tr>
 								<th></th>
@@ -218,13 +234,8 @@ Users Masterlist - BHIMS
 								@else
 									<tr>
 										<td>
-											<div class="form-check">
-												<label class="form-check-label">
-													<input class="form-check-input" type="checkbox" value="">
-													<span class="form-check-sign">
-														<span class="check"></span>
-													</span>
-												</label>
+											<div class="img-container">
+												<img src="http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png" alt="...">
 											</div>
 										</td>
 										<td>{{ $user->name }}</td>
@@ -238,22 +249,154 @@ Users Masterlist - BHIMS
 											@endif
 										</td>
 										<td class="td-actions text-right">
-											<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+											<button rel="tooltip" title="Edit {{$user->name}}" class="btn btn-primary btn-link btn-sm" data-toggle="modal" data-target="#editModal">
 												<i class="material-icons">edit</i>
 											</button>
-											<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+											<a href="#" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm destroy-user" data-id="{{$user->id}}" data-token="{{ csrf_token() }}">
 												<i class="material-icons">close</i>
-											</button>
+											</a>
 										</td>
 									</tr>
 								@endif
 							@endforeach
 						</tbody>
 					</table>
+					<div class="user-pagination">
+						{{ $users->links() }}
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 </div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-body">
+                    <form class="form" method="POST" action="" id="edit-user-form">
+                    	@method('patch')
+                        <p class="description text-center">Editing <span class="user-name">Sample User</span></p>
+                        <div class="card-body">
+
+							<div class="fileinput fileinput-new text-center" data-provides="fileinput">
+							    <div class="fileinput-new thumbnail img-raised">
+							        <img src="http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png" alt="...">
+							    </div>
+							    <div class="fileinput-preview fileinput-exists thumbnail img-raised"></div>
+							    <div>
+							        <span class="btn btn-raised btn-round btn-default btn-file">
+							            <span class="fileinput-new">Select image</span>
+							            <span class="fileinput-exists">Change</span>
+							            <input type="file" name="..." />
+							        </span>
+							        <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+							    </div>
+							</div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="material-icons">face</i></div>
+                                  </div>
+                                  <input type="text" class="form-control" placeholder="Fullname">
+                                </div>
+                            </div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="material-icons">email</i></div>
+                                  </div>
+                                  <input type="text" class="form-control" placeholder="Email">
+                                </div>
+                            </div>
+
+							<div class="form-group bmd-form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><i class="material-icons">home</i></div>
+									</div>
+									<select name="barangay" id="barangay" class="form-control">
+										@foreach($barangays as $barangay)
+											<option value="{{$barangay->id}}">{{$barangay->name}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+
+							<div class="form-check form-check-inline">
+							    <label class="form-check-label">
+							        <input class="form-check-input" type="checkbox" value="">
+							        Verified
+							        <span class="form-check-sign">
+							            <span class="check"></span>
+							        </span>
+							    </label>
+							</div>
+
+							<div class="form-check form-check-inline">
+							    <label class="form-check-label">
+							        <input class="form-check-input" type="checkbox" value="">
+							        Is Admin
+							        <span class="form-check-sign">
+							            <span class="check"></span>
+							        </span>
+							    </label>
+							</div>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-success btn-wd edit-submit-btn">Save</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('script')
+<script>
+	$(document).ready(function(){
+		$('.destroy-user').on('click', function(){
+			var id = $(this).data('id');
+			var token = $(this).data('token');
+			var dom = $(this).closest('tr');
+			swal({
+				title:"Are you sure?",
+				text: "You won't be able to revert this!",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: '#e53935',
+				cancelButtonColor: '#26c6da',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if(result.value){
+					$.ajax({
+						url: "/admin/users/"+id,
+						type: 'DELETE',
+						dataType: 'json',
+						data: {
+							"id": id,
+							"_method": "DELETE",
+							"_token": token,
+						},
+						success: function(data)
+						{
+							swal({
+								title: 'Deleted!',
+								text: data['success'],
+								type: 'success',
+								timer: 1500
+							});
+							dom.fadeOut();
+						}
+					});
+				}
+			});
+		});
+	});
+</script>
 @endsection

@@ -13,7 +13,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
 
 	<!-- Material Dashboard CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/material-dashboard.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/css/material-dashboard.min.css') }}">
+
+	<!-- Custom CSS -->
+	@yield('style')
 
 </head>
 <body>
@@ -131,5 +134,7 @@
 
 <!-- Main JS -->
 <script src="{{ asset('js/main.js') }}"></script>
+
+@yield('script')
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Barangay;
 
 class UserController extends Controller
 {
@@ -17,8 +18,9 @@ class UserController extends Controller
         $users = $this->getAllUsers();
         $verified = $this->getVerifiedUsers();
         $daily_registrants = $this->getDailyRegistrants();
+        $barangays = Barangay::all();
         
-        return view('admin.users', compact('users', 'verified', 'daily_registrants'));
+        return view('admin.users.index', compact('users', 'verified', 'daily_registrants', 'barangays'));
     }
 
     /**
@@ -84,12 +86,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json([
+            'success' => 'Record has been deleted successfully!'
+        ]);
     }
 
     public function getAllUsers()
     {
-        $users = User::all();
+        $users = User::paginate(20);
         return $users;
     }
 
