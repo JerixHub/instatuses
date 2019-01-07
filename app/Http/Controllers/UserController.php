@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Barangay;
+use Storage;
+use File;
 
 class UserController extends Controller
 {
@@ -17,8 +20,9 @@ class UserController extends Controller
         $users = $this->getAllUsers();
         $verified = $this->getVerifiedUsers();
         $daily_registrants = $this->getDailyRegistrants();
+        $barangays = Barangay::all();
         
-        return view('admin.users', compact('users', 'verified', 'daily_registrants'));
+        return view('admin.users.index', compact('users', 'verified', 'daily_registrants', 'barangays'));
     }
 
     /**
@@ -28,7 +32,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $barangays = Barangay::all();
+        return view('admin.users.create', compact('barangays'));
     }
 
     /**
@@ -39,7 +44,41 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'fullname'  => 'required',
+            'email'     => 'required',
+        ]);
+
+        $user = new User;
+
+        if(!empty($request->image_url)){
+            $file=$request->file('image_url');
+            $extension=$file->getClientOriginalExtension();
+            Storage::disk('public')->put($file->getFilename().'.'.$extension, File::get($file));
+
+            $user->image_url = $file->getFilename().'.'.$extension;
+        }
+
+        $user->name = $request->fullname;
+        $user->email = $request->email;
+        $user->barangay_id = $request->barangay_id;
+        if(array_key_exists('is_verified', $request->all())){
+            $user->is_verified = 1;
+        }else{
+            $user->is_verified = 0;
+        }
+
+        if(array_key_exists('is_admin', $request->all())){
+            $user->is_admin = 1;
+        }else{
+            $user->is_admin = 0;
+        }
+
+        $user->password = bcrypt($request->password);
+
+        $user->save();
+
+        return redirect('/admin/users')->with('message', 'Successfully Added '.$user->name);
     }
 
     /**
@@ -73,7 +112,45 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        // validate
+
+        $this->validate($request, [
+            'fullname' => 'required',
+            'email' => 'required',
+        ]);
+
+        $current_user = User::find($id);
+        if(!empty($request->image_url)){
+            $file=$request->file('image_url');
+            $extension=$file->getClientOriginalExtension();
+            Storage::disk('public')->put($file->getFilename().'.'.$extension, File::get($file));
+
+
+            $current_user->image_url = $file->getFilename().'.'.$extension;
+        }else{
+            $current_user->image_url = $request->image_url_val;
+        }
+
+        $current_user->name = $request->fullname;
+        $current_user->email = $request->email;
+        $current_user->barangay_id = $request->barangay;
+
+        if(array_key_exists('is_verified', $request->all())){
+            $current_user->is_verified = 1;
+        }else{
+            $current_user->is_verified = 0;
+        }
+
+        if(array_key_exists('is_admin', $request->all())){
+            $current_user->is_admin = 1;
+        }else{
+            $current_user->is_admin = 0;
+        }
+
+        $current_user->save();
+
+        return redirect('/admin/users');
     }
 
     /**
@@ -84,12 +161,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json([
+            'success' => 'Record has been deleted successfully!'
+        ]);
     }
 
     public function getAllUsers()
     {
-        $users = User::all();
+        $users = User::paginate(20);
         return $users;
     }
 

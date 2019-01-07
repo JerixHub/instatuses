@@ -20,8 +20,7 @@ Route::get('/', 'WelcomeController@index')->name('welcome');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::prefix('admin')->group(function(){
+Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::get('/', 'AdminController@dashboard');
-	// Route::get('/users', 'UserController@index');
 	Route::resource('/users','UserController');
 });
