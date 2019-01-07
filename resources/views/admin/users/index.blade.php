@@ -26,6 +26,9 @@ Users Masterlist - BHIMS
 	width: auto;
 	max-width: 100%;
 }
+.approve-form{
+	display: inline-block;
+}
 </style>
 @endsection
 
@@ -142,6 +145,19 @@ Users Masterlist - BHIMS
 		</button>
 	</div>
 	@endif
+
+	@if($errors->any())
+	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		<ul>
+		@foreach($errors->all() as $error)
+			<li>{{ $error }}</li>
+		@endforeach
+		</ul>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	@endif
 	<div class="row">
 		<div class="col-lg-3 col-md-6 col-sm-6">
 			<div class="card card-stats">
@@ -213,9 +229,11 @@ Users Masterlist - BHIMS
 		<div class="col-lg-12 col-md-12">
 			<div class="card">
 				<div class="card-header">
+					@if(Auth::user()->is_superadmin)
 					<a href="/admin/users/create" class="btn btn-info">
 						<i class="material-icons">person_add</i> Add New User
 					</a>
+					@endif
 
 				</div>
 				<div class="card-body">
@@ -225,39 +243,16 @@ Users Masterlist - BHIMS
 								<th></th>
 								<th>Fullname</th>
 								<th>Email</th>
+								<th>Contact Number</th>
 								<th>Barangay</th>
-								<th>Verified</th>
-								<th>Is Admin</th>
+								<th>Status</th>
+								<th>Position</th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($users as $user)
-							@if($user->id == 1)
-							<tr>
-								<td>
-
-								</td>
-								<td>{{ $user->name }}</td>
-								<td>{{ $user->email }}</td>
-								<td>{{ $user->barangay_id }}</td>
-								<td>
-									@if($user->is_verified == 1)
-									Yes
-									@else
-									No
-									@endif
-								</td>
-								<td>
-									@if($user->is_admin == 1)
-									Yes
-									@else
-									No
-									@endif
-								</td>
-								<td></td>
-							</tr>
-							@else
+							@if($user->id != Auth::user()->id && $user->id != 1)
 							<tr>
 								<td>
 									<div class="img-container">
@@ -267,15 +262,33 @@ Users Masterlist - BHIMS
 								</td>
 								<td>{{ $user->name }}</td>
 								<td>{{ $user->email }}</td>
+								<td>{{ $user->contact_no }}</td>
 								<td data-id="{{$user->barangay->id}}">{{ $user->barangay->name }}</td>
-								<td>{{ $user->is_verified ? 'Yes': 'No' }}</td>
-								<td>{{ $user->is_admin ? 'Yes': 'No' }}</td>
+								<td>
+									@if($user->is_verified)
+									<i class="material-icons text-success">done</i>
+									@else
+									<i class="material-icons text-danger">clear</i>
+									@endif
+								</td>
+								<td>{{ $user->is_admin ? 'Admin': 'User' }}</td>
 								<td class="td-actions text-right">
+									@if(Auth::user()->is_superadmin)
 									<button rel="tooltip" title="Edit {{$user->name}}" class="btn btn-primary btn-link btn-sm edit-user" data-toggle="modal" data-target="#editModal" data-id="{{$user->id}}">
 										<i class="material-icons">edit</i>
 									</button>
+									@elseif(Auth::user()->is_admin && $user->is_verified != 1)
+									<form action="/admin/users/approve/{{$user->id}}" method="POST" class="approve-form">
+										@csrf
+										@method('patch')
+										<input type="hidden" value="{{$user->id}}" name="user">
+										<button class="btn btn-primary btn-link btn-sm approve-user" type="submit" rel="tooltip" title="Approve {{$user->name}}">
+											<i class="material-icons">check</i>
+										</button>
+									</form>
+									@endif
 									<a href="#" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm destroy-user" data-id="{{$user->id}}" data-token="{{ csrf_token() }}">
-										<i class="material-icons">close</i>
+										<i class="fa fa-trash"></i>
 									</a>
 								</td>
 							</tr>
@@ -293,6 +306,7 @@ Users Masterlist - BHIMS
 </div>
 </div>
 
+@if(Auth::user()->is_superadmin)
 <div class="modal fade" id="editModal" tabindex="-1" role="">
 	<div class="modal-dialog modal-login" role="document">
 		<div class="modal-content">
@@ -333,7 +347,17 @@ Users Masterlist - BHIMS
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="material-icons">email</i></div>
 									</div>
-									<input type="text" class="form-control" placeholder="Email" name="email">
+									<input type="text" class="form-control" placeholder="Email" name="email" disabled>
+									<input type="hidden" name="email">
+								</div>
+							</div>
+
+							<div class="form-group bmd-form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><i class="material-icons">phone</i></div>
+									</div>
+									<input type="text" class="form-control" placeholder="Contact Number" name="contact_no">
 								</div>
 							</div>
 
@@ -378,6 +402,7 @@ Users Masterlist - BHIMS
 			</div>
 		</div>
 	</div>
+@endif
 	@endsection
 
 	@section('script')
@@ -424,9 +449,10 @@ Users Masterlist - BHIMS
 			$('.edit-user').on('click', function(){
 				var name = $(this).closest('tr').find('td:nth-child(2)').text();
 				var email = $(this).closest('tr').find('td:nth-child(3)').text();
-				var barangay = $(this).closest('tr').find('td:nth-child(4)').data('id');
-				var is_verified = $(this).closest('tr').find('td:nth-child(5)').text();
-				var is_admin = $(this).closest('tr').find('td:nth-child(6)').text();
+				var contact_no = $(this).closest('tr').find('td:nth-child(4)').text();
+				var barangay = $(this).closest('tr').find('td:nth-child(5)').data('id');
+				var is_verified = $(this).closest('tr').find('td:nth-child(6) i');
+				var is_admin = $(this).closest('tr').find('td:nth-child(7)').text();
 				var image_url_val = $(this).closest('tr').find('td:nth-child(1) input').val();
 				var image_url = $(this).closest('tr').find('td:nth-child(1) img').attr('src');
 				var id = $(this).data('id');
@@ -435,30 +461,19 @@ Users Masterlist - BHIMS
 				$('#editModal .user-name').text(name);
 				$('#editModal input[name=fullname]').val(name);
 				$('#editModal input[name=email]').val(email);
+				$('#editModal input[name=contact_no]').val(contact_no);
 				$('#editModal select[name=barangay]').val(barangay);
 				$('#editModal input[name=image_url_val]').val(image_url_val);
 
 				$('.user-image-container img').attr('src', image_url);
 
-				if(is_verified == "Yes"){
+				if(is_verified.hasClass('text-success')){
 					$('#editModal input[name=is_verified]').prop('checked', true);
 				}
-				if(is_admin == "Yes"){
+				if(is_admin == "Admin"){
 					$('#editModal input[name=is_admin]').prop('checked', true);
 				}
 			});
-
-		// $('.edit-submit-btn').on('click', function(){
-		// 	var name = $('#editModal input[name=fullname]').val();
-		// 	var email = $('#editModal input[name=email]').val();
-		// 	var barangay = $('#editModal select[name=barangay]').val();
-		// 	var is_verified = $('#editModal input[name=is_verified]').val();
-		// 	var is_admin = $('#editModal input[name=is_admin]').val();
-		// 	var image_url = $('#editModal input[name=image_url]').val();
-		// 	$.ajax({
-		// 		url: "/admin/users/"
-		// 	});
-		// });
 
 		$('.inputFileVisible').on('click', function(){
 			$(this).closest('.form-group').find('.inputFileHidden').trigger('click');

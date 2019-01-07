@@ -37,4 +37,9 @@ class WelcomeController extends Controller
         $barangays = Barangay::all();
     	return view('welcome', compact('barangays'));
     }
+
+    public function waitConfirmation()
+    {
+        return view('wait');
+    }
 }

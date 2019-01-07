@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Fullname') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
@@ -22,6 +22,24 @@
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="barangay" class="col-md-4 col-form-label text-md-right">Barangay</label>
+                            <div class="col-md-6">
+                                <select name="barangay" id="barangay" class="form-control">
+                                    @foreach($barangays as $barangay)
+                                    <option value="{{$barangay->id}}">{{$barangay->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="contact_no" class="col-md-4 col-form-label text-md-right">Contact Number</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="contact_no" name="contact_no" required value="{{old('contact_no')}}">
                             </div>
                         </div>
 

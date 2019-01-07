@@ -42,6 +42,16 @@
                             {{ __('Forgot Your Password?') }}
                         </a>
                         @endif
+                        @if ($errors->has('email'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('email') }}</strong>
+                        </span>
+                        @endif
+                        @if ($errors->has('password'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('password') }}</strong>
+                        </span>
+                        @endif
                     </form>
             </div>
         </div>
@@ -78,6 +88,11 @@
                                     <option value="{{ $barangay->id }}">{{$barangay->name}}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact_no">Contact Number:</label>
+                            <input type="text" class="form-control" id="contact_no" name="contact_no" required value="{{old('contact_no')}}">
                         </div>
 
                         <div class="form-group">

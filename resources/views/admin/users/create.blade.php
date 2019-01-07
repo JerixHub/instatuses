@@ -144,16 +144,22 @@ Users Masterlist - BHIMS
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-6">
+							<div class="col-md-5">
 								<div class="form-group bmd-form-group">
 									<label class="bmd-label-floating">Fullname</label>
 									<input type="text" class="form-control" name="fullname">
 								</div>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-5">
 								<div class="form-group bmd-form-group">
 									<label class="bmd-label-floating">Email address</label>
 									<input type="email" class="form-control" name="email">
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group bmd-form-group">
+									<label class="bmd-label-floating">Contact Number</label>
+									<input type="contact_no" class="form-control" name="contact_no">
 								</div>
 							</div>
 						</div>

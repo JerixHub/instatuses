@@ -16,6 +16,7 @@
 // });
 
 Route::get('/', 'WelcomeController@index')->name('welcome');
+Route::get('/wait-for-confirmation', 'WelcomeController@waitConfirmation')->name('wait');
 
 Auth::routes();
 
@@ -23,4 +24,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::get('/', 'AdminController@dashboard');
 	Route::resource('/users','UserController');
+	Route::patch('/users/approve/{user}', 'UserController@approveUser')->name('users.approve');
 });

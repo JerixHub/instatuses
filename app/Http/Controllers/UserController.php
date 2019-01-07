@@ -47,6 +47,7 @@ class UserController extends Controller
         $this->validate($request, [
             'fullname'  => 'required',
             'email'     => 'required',
+            'contact_no' => 'required',
         ]);
 
         $user = new User;
@@ -61,6 +62,7 @@ class UserController extends Controller
 
         $user->name = $request->fullname;
         $user->email = $request->email;
+        $user->contact_no = $request->contact_no;
         $user->barangay_id = $request->barangay_id;
         if(array_key_exists('is_verified', $request->all())){
             $user->is_verified = 1;
@@ -118,7 +120,10 @@ class UserController extends Controller
         $this->validate($request, [
             'fullname' => 'required',
             'email' => 'required',
+            'contact_no' => 'required',
         ]);
+
+        // dd($request->all());
 
         $current_user = User::find($id);
         if(!empty($request->image_url)){
@@ -133,6 +138,7 @@ class UserController extends Controller
         }
 
         $current_user->name = $request->fullname;
+        $current_user->contact_no = $request->contact_no;
         $current_user->email = $request->email;
         $current_user->barangay_id = $request->barangay;
 
@@ -215,5 +221,15 @@ class UserController extends Controller
         }
 
         return $admins;
+    }
+
+    public function approveUser(Request $request, $id)
+    {
+        $current_user = User::find($id);
+        $current_user->is_verified = 1;
+
+        $current_user->save();
+
+        return redirect('/admin/users');
     }
 }
