@@ -288,7 +288,6 @@ Users Masterlist - BHIMS
 						<i class="material-icons">person_add</i> Add New User
 					</a>
 					@endif
-
 				</div>
 				<div class="card-body">
 					<table class="table table-shopping">
@@ -340,6 +339,12 @@ Users Masterlist - BHIMS
 											<i class="material-icons">check</i>
 										</button>
 									</form>
+									@else
+									<td class="td-actions text-right">
+										<button class="btn btn-primary btn-link btn-sm verify-user" rel="tooltip" title="Verify {{$user->name}}" data-id="{{$user->id}}">
+											<i class="material-icons">check</i>
+										</button>
+									</td>
 									@endif
 									<a href="#" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm destroy-user" data-id="{{$user->id}}" data-token="{{ csrf_token() }}">
 										<i class="fa fa-trash"></i>
