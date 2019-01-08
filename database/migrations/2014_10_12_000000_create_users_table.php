@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->integer('is_admin')->default(0);
+            $table->integer('is_superadmin')->default(0);
             $table->integer('is_verified')->default(0);
             $table->string('image_url')->nullable();
             $table->string('password');

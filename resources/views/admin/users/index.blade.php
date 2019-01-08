@@ -213,10 +213,11 @@ Users Masterlist - BHIMS
 		<div class="col-lg-12 col-md-12">
 			<div class="card">
 				<div class="card-header">
+					@if(Auth::user()->is_superadmin)
 					<a href="/admin/users/create" class="btn btn-info">
 						<i class="material-icons">person_add</i> Add New User
 					</a>
-
+					@endif
 				</div>
 				<div class="card-body">
 					<table class="table table-shopping">
@@ -270,6 +271,7 @@ Users Masterlist - BHIMS
 								<td data-id="{{$user->barangay->id}}">{{ $user->barangay->name }}</td>
 								<td>{{ $user->is_verified ? 'Yes': 'No' }}</td>
 								<td>{{ $user->is_admin ? 'Yes': 'No' }}</td>
+								@if(Auth::user()->is_superadmin)
 								<td class="td-actions text-right">
 									<button rel="tooltip" title="Edit {{$user->name}}" class="btn btn-primary btn-link btn-sm edit-user" data-toggle="modal" data-target="#editModal" data-id="{{$user->id}}">
 										<i class="material-icons">edit</i>
@@ -278,6 +280,13 @@ Users Masterlist - BHIMS
 										<i class="material-icons">close</i>
 									</a>
 								</td>
+								@else
+								<td class="td-actions text-right">
+									<button class="btn btn-primary btn-link btn-sm verify-user" rel="tooltip" title="Verify {{$user->name}}" data-id="{{$user->id}}">
+										<i class="material-icons">check</i>
+									</button>
+								</td>
+								@endif
 							</tr>
 							@endif
 							@endforeach
