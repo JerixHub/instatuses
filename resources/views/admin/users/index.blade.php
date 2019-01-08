@@ -46,10 +46,64 @@ Users Masterlist - BHIMS
 	</a>
 </li>
 <li class="nav-item">
-	<a class="nav-link" href="/admin/reports">
+	<a class="nav-link" data-toggle="collapse" href="#reporting" aria-expanded="true">
 		<i class="material-icons">content_paste</i>
-		<p>Reports</p>
+		<p> Reports
+			<b class="caret"></b>
+		</p>
 	</a>
+	<div class="collapse" id="reporting" style="">
+		<ul class="nav">
+			<li class="nav-item ">
+				<a class="nav-link" href="../examples/pages/pricing.html">
+					<span class="sidebar-mini"> P </span>
+					<span class="sidebar-normal"> Pricing </span>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="../examples/pages/rtl.html">
+					<span class="sidebar-mini"> RS </span>
+					<span class="sidebar-normal"> RTL Support </span>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="../examples/pages/timeline.html">
+					<span class="sidebar-mini"> T </span>
+					<span class="sidebar-normal"> Timeline </span>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="../examples/pages/login.html">
+					<span class="sidebar-mini"> LP </span>
+					<span class="sidebar-normal"> Login Page </span>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="../examples/pages/register.html">
+					<span class="sidebar-mini"> RP </span>
+					<span class="sidebar-normal"> Register Page </span>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="../examples/pages/lock.html">
+					<span class="sidebar-mini"> LSP </span>
+					<span class="sidebar-normal"> Lock Screen Page </span>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="../examples/pages/user.html">
+					<span class="sidebar-mini"> UP </span>
+					<span class="sidebar-normal"> User Profile </span>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="../examples/pages/error.html">
+					<span class="sidebar-mini"> E </span>
+					<span class="sidebar-normal"> Error Page </span>
+				</a>
+			</li>
+		</ul>
+	</div>
 </li>
 <li class="nav-item active">
 	<a class="nav-link" href="/admin/users">
@@ -149,9 +203,9 @@ Users Masterlist - BHIMS
 	@if($errors->any())
 	<div class="alert alert-danger alert-dismissible fade show" role="alert">
 		<ul>
-		@foreach($errors->all() as $error)
+			@foreach($errors->all() as $error)
 			<li>{{ $error }}</li>
-		@endforeach
+			@endforeach
 		</ul>
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
@@ -402,7 +456,7 @@ Users Masterlist - BHIMS
 			</div>
 		</div>
 	</div>
-@endif
+	@endif
 	@endsection
 
 	@section('script')
@@ -475,29 +529,29 @@ Users Masterlist - BHIMS
 				}
 			});
 
-		$('.inputFileVisible').on('click', function(){
-			$(this).closest('.form-group').find('.inputFileHidden').trigger('click');
-		});
+			$('.inputFileVisible').on('click', function(){
+				$(this).closest('.form-group').find('.inputFileHidden').trigger('click');
+			});
 
-		$('.inputFileHidden').on('change', function(){
-			var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
-			$(this).closest('.form-group').find('.inputFileVisible').val(filename);
-			readURL(this);
-		});
+			$('.inputFileHidden').on('change', function(){
+				var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+				$(this).closest('.form-group').find('.inputFileVisible').val(filename);
+				readURL(this);
+			});
 
 
-		function readURL(input) {
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
+			function readURL(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
 
-				reader.onload = function (e) {
-					$('.user-image-container img').attr('src', e.target.result);
+					reader.onload = function (e) {
+						$('.user-image-container img').attr('src', e.target.result);
+					}
+
+					reader.readAsDataURL(input.files[0]);
 				}
-
-				reader.readAsDataURL(input.files[0]);
 			}
-		}
 
-	});
-</script>
-@endsection
+		});
+	</script>
+	@endsection
