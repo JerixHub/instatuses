@@ -31,4 +31,5 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::get('/', 'AdminController@dashboard');
 	Route::resource('/users','UserController');
 	Route::patch('/users/approve/{user}', 'UserController@approveUser')->name('users.approve');
+	Route::get('/summary/{program}/{barangay?}/{user?}', 'SummaryController@show')->name('show.program.barangay');
 });

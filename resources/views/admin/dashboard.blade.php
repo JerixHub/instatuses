@@ -18,18 +18,67 @@ Dashboard - BHIMS
 	</a>
 </li>
 <li class="nav-item">
-	<a class="nav-link" href="/admin/reports">
+	<a class="nav-link" data-toggle="collapse" href="#reporting" aria-expanded="true">
 		<i class="material-icons">content_paste</i>
-		<p>Reports</p>
+		<p> Reports
+			<b class="caret"></b>
+		</p>
 	</a>
+	<div class="collapse" id="reporting">
+		<ul class="nav">
+			<li class="nav-item ">
+				<a class="nav-link" href="#tclreporting" data-toggle="collapse" aria-expanded="true">
+					<i class="material-icons">list</i>
+					<p> Target Client List
+						<b class="caret"></b>
+					</p>
+				</a>
+				<div class="collapse" id="tclreporting">
+					<ul class="nav">
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<!-- <span class="sidebar-mini">1st</span> -->
+								<span class="sidebar-normal">Part 1</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<!-- <span class="sidebar-mini">2nd</span> -->
+								<span class="sidebar-normal">Part 2</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="#summaryreporting" data-toggle="collapse" aria-expanded="true">
+					<i class="material-icons">show_chart</i>
+					<p> Summary Table
+						<b class="caret"></b>
+					</p>
+				</a>
+				<div class="collapse" id="summaryreporting">
+					<ul class="nav">
+						@foreach($programs as $program)
+						<li class="nav-item">
+							<a href="{{URL::route('show.program.barangay', [$program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
+								<span class="sidebar-normal">{{ $program->name }}</span>
+							</a>
+						</li>
+						@endforeach
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</div>
 </li>
-<li class="nav-item ">
+<li class="nav-item">
 	<a class="nav-link" href="/admin/users">
 		<i class="material-icons">library_books</i>
 		<p>Users Masterlist</p>
 	</a>
 </li>
-<li class="nav-item ">
+<li class="nav-item">
 	<a class="nav-link" href="/admin/settings">
 		<i class="material-icons">bubble_chart</i>
 		<p>Settings</p>

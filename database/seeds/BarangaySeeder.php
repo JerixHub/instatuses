@@ -13,7 +13,31 @@ class BarangaySeeder extends Seeder
      */
     public function run()
     {
-        $barangays = array('Brillante (Poblacion)', 'Bulawan', 'Calao', 'Carayat', 'Diamante', 'Gogon', 'Lupi', 'Maningcay De Oro', 'Manlabong', 'Perlas', 'Quidolog', 'Rizal', 'San Antonio', 'San Fernando', 'San Isidro', 'San Juan', 'San Rafael', 'San Ramon', 'Santa Lourdes', 'Santo Domingo', 'Talisayan', 'Tupaz', 'Ulag');
+        $barangays = array(
+            'Brillante (Poblacion)',
+            'Bulawan',
+            'Calao',
+            'Carayat',
+            'Diamante',
+            'Gogon',
+            'Lupi',
+            'Maningcay De Oro',
+            'Manlabong',
+            'Perlas',
+            'Quidolog',
+            'Rizal',
+            'San Antonio',
+            'San Fernando',
+            'San Isidro',
+            'San Juan',
+            'San Rafael',
+            'San Ramon',
+            'Santa Lourdes',
+            'Santo Domingo',
+            'Talisayan',
+            'Tupaz',
+            'Ulag'
+        );
 
         foreach ($barangays as $barangay) {
         	DB::table('barangays')->insert([
