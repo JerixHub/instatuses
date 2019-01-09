@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
 use App\Barangay;
 
 class RegisterController extends Controller
@@ -102,17 +100,5 @@ class RegisterController extends Controller
         Mail::to($data['email'])->send(new WelcomeMail($user));
 
         return $user;
-    }
-
-        public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        // $this->guard()->login($user);
-
-        return $this->registered($request, $user)
-                        ?: redirect($this->redirectPath());
     }
 }

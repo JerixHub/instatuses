@@ -17,6 +17,12 @@
 
 Route::get('/', 'WelcomeController@index')->name('welcome');
 Route::get('/wait-for-confirmation', 'WelcomeController@waitConfirmation')->name('wait');
+Route::get('/about-us', function(){
+	return view('about');
+});
+Route::get('/learn-more', function(){
+	return view('learn');
+});
 
 Auth::routes();
 

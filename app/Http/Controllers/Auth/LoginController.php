@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -46,4 +47,11 @@ class LoginController extends Controller
 
         return redirect()->intended('/home'); //redirect to standard user homepage
     }
+
+    protected function sendFailedLoginResponse(Request $request)
+     {
+          throw ValidationException::withMessages([
+               $this->username() => ['Please contact your immediate superior to check your account'],
+          ]);
+     }
 }

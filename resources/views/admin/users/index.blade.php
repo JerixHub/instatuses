@@ -52,55 +52,108 @@ Users Masterlist - BHIMS
 			<b class="caret"></b>
 		</p>
 	</a>
-	<div class="collapse" id="reporting" style="">
+	<div class="collapse" id="reporting">
 		<ul class="nav">
 			<li class="nav-item ">
-				<a class="nav-link" href="../examples/pages/pricing.html">
-					<span class="sidebar-mini"> P </span>
-					<span class="sidebar-normal"> Pricing </span>
+				<a class="nav-link" href="#tclreporting" data-toggle="collapse" aria-expanded="true">
+					<i class="material-icons">list</i>
+					<p> Target Client List
+						<b class="caret"></b>
+					</p>
 				</a>
+				<div class="collapse" id="tclreporting">
+					<ul class="nav">
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<!-- <span class="sidebar-mini">1st</span> -->
+								<span class="sidebar-normal">Part 1</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<!-- <span class="sidebar-mini">2nd</span> -->
+								<span class="sidebar-normal">Part 2</span>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</li>
 			<li class="nav-item ">
-				<a class="nav-link" href="../examples/pages/rtl.html">
-					<span class="sidebar-mini"> RS </span>
-					<span class="sidebar-normal"> RTL Support </span>
+				<a class="nav-link" href="#summaryreporting" data-toggle="collapse" aria-expanded="true">
+					<i class="material-icons">show_chart</i>
+					<p> Summary Table
+						<b class="caret"></b>
+					</p>
 				</a>
-			</li>
-			<li class="nav-item ">
-				<a class="nav-link" href="../examples/pages/timeline.html">
-					<span class="sidebar-mini"> T </span>
-					<span class="sidebar-normal"> Timeline </span>
-				</a>
-			</li>
-			<li class="nav-item ">
-				<a class="nav-link" href="../examples/pages/login.html">
-					<span class="sidebar-mini"> LP </span>
-					<span class="sidebar-normal"> Login Page </span>
-				</a>
-			</li>
-			<li class="nav-item ">
-				<a class="nav-link" href="../examples/pages/register.html">
-					<span class="sidebar-mini"> RP </span>
-					<span class="sidebar-normal"> Register Page </span>
-				</a>
-			</li>
-			<li class="nav-item ">
-				<a class="nav-link" href="../examples/pages/lock.html">
-					<span class="sidebar-mini"> LSP </span>
-					<span class="sidebar-normal"> Lock Screen Page </span>
-				</a>
-			</li>
-			<li class="nav-item ">
-				<a class="nav-link" href="../examples/pages/user.html">
-					<span class="sidebar-mini"> UP </span>
-					<span class="sidebar-normal"> User Profile </span>
-				</a>
-			</li>
-			<li class="nav-item ">
-				<a class="nav-link" href="../examples/pages/error.html">
-					<span class="sidebar-mini"> E </span>
-					<span class="sidebar-normal"> Error Page </span>
-				</a>
+				<div class="collapse" id="summaryreporting">
+					<ul class="nav">
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Maternal Care</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Family Planning</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Child Care</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Dental Health</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Malaria</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Tuberculosis</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Filariasis</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Leprosy</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Schitosomiasis</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Morbidity Disease</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Natality</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Environmental Health</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<span class="sidebar-normal">Mortality</span>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -319,9 +372,9 @@ Users Masterlist - BHIMS
 								<td data-id="{{$user->barangay->id}}">{{ $user->barangay->name }}</td>
 								<td>
 									@if($user->is_verified)
-									<i class="material-icons text-success">done</i>
+									<i class="material-icons text-success" rel="tooltip" title="{{ $user->name }} is verified">done</i>
 									@else
-									<i class="material-icons text-danger">clear</i>
+									<i class="material-icons text-danger" rel="tooltip" title="{{ $user->name }} is not yet verified">clear</i>
 									@endif
 								</td>
 								<td>{{ $user->is_admin ? 'Admin': 'User' }}</td>
