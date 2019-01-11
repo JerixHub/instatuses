@@ -10,4 +10,9 @@ class Barangay extends Model
     {
     	return $this->belongsToMany('App\Users');
     }
+
+    public function summaries()
+    {
+    	return $this->belongsToMany('App\Summary');
+    }
 }

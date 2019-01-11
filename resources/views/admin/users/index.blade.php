@@ -87,71 +87,13 @@ Users Masterlist - BHIMS
 				</a>
 				<div class="collapse" id="summaryreporting">
 					<ul class="nav">
+						@foreach($summaries as $summary)
 						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Maternal Care</span>
+							<a href="{{URL::route('show.program.barangay', [$summary->program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
+								<span class="sidebar-normal">{{ $summary->program->name }}</span>
 							</a>
 						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Family Planning</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Child Care</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Dental Health</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Malaria</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Tuberculosis</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Filariasis</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Leprosy</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Schitosomiasis</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Morbidity Disease</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Natality</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Environmental Health</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<span class="sidebar-normal">Mortality</span>
-							</a>
-						</li>
+						@endforeach
 					</ul>
 				</div>
 			</li>

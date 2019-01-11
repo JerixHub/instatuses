@@ -16,6 +16,7 @@ class CreateProgramsTable extends Migration
         Schema::create('programs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->enum('header_type', ['date']);
             $table->timestamps();
         });
     }

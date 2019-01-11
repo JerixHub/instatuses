@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    //
+    public function program()
+    {
+    	return $this->belongsTo('App\Program');
+    }
 }

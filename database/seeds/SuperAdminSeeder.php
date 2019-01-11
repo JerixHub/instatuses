@@ -16,6 +16,7 @@ class SuperAdminSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('superadmin'),
+            'barangay_id' => 1,
             'is_verified' => 1,
             'is_admin' => 1,
             'is_superadmin' => 1,

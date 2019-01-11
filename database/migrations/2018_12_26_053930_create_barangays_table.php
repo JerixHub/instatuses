@@ -20,7 +20,7 @@ class CreateBarangaysTable extends Migration
         });
 
         Schema::table('users', function( Blueprint $table ){
-            $table->unsignedInteger('barangay_id')->nullable()->after('is_admin');
+            $table->unsignedInteger('barangay_id')->after('is_admin');
             $table->foreign('barangay_id')->references('id')->on('barangays');
         });
     }

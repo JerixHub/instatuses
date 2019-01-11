@@ -15,7 +15,7 @@ class CreateSummariesTable extends Migration
     {
         Schema::create('summaries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->boolean('is_gender_activated')->default(false);
             $table->unsignedInteger('program_id');
             $table->foreign('program_id')->references('id')->on('programs');
             $table->timestamps();

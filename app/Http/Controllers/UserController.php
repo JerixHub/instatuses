@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Barangay;
+use App\Program;
+use App\Summary;
 use Storage;
 use File;
 
@@ -21,8 +23,10 @@ class UserController extends Controller
         $verified = $this->getVerifiedUsers();
         $daily_registrants = $this->getDailyRegistrants();
         $barangays = Barangay::all();
-        
-        return view('admin.users.index', compact('users', 'verified', 'daily_registrants', 'barangays'));
+        $programs = Program::all();
+        $summaries = Summary::all();
+
+        return view('admin.users.index', compact('users', 'verified', 'daily_registrants', 'barangays', 'summaries'));
     }
 
     /**
@@ -33,7 +37,8 @@ class UserController extends Controller
     public function create()
     {
         $barangays = Barangay::all();
-        return view('admin.users.create', compact('barangays'));
+        $summaries = Summary::all();
+        return view('admin.users.create', compact('barangays', 'summaries'));
     }
 
     /**
