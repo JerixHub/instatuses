@@ -11,7 +11,7 @@ class AdminController extends Controller
 	
     public function dashboard()
     {
-    	$summaries = Summary::all();
-    	return view('admin.dashboard', compact('summaries'));
+    	$programs = Program::all();
+    	return view('admin.dashboard', compact('programs'));
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSummariesTable extends Migration
+class ProgramQuestion extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateSummariesTable extends Migration
      */
     public function up()
     {
-        Schema::create('summaries', function (Blueprint $table) {
+        Schema::create('program_question', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('is_gender_activated')->default(false);
             $table->unsignedInteger('program_id');
-            $table->foreign('program_id')->references('id')->on('programs');
+            $table->unsignedInteger('question_id');
+            $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade');
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+            $table->string('answer');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateSummariesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('summaries');
+        Schema::dropIfExists('program_question');
     }
 }
