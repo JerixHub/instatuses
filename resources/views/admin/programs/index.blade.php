@@ -1,11 +1,11 @@
 @extends('admin.layout.layout')
 
 @section('title')
-Dashboard - BHIMS
+{{$current_program->name}}
 @endsection
 
 @section('sidenav')
-<li class="nav-item active">
+<li class="nav-item">
 	<a class="nav-link" href="/admin">
 		<i class="material-icons">dashboard</i>
 		<p>Dashboard</p>
@@ -24,9 +24,9 @@ Dashboard - BHIMS
 			<b class="caret"></b>
 		</p>
 	</a>
-	<div class="collapse" id="reporting">
+	<div class="collapse show" id="reporting">
 		<ul class="nav">
-			<li class="nav-item ">
+			<li class="nav-item">
 				<a class="nav-link" href="#tclreporting" data-toggle="collapse" aria-expanded="true">
 					<i class="material-icons">list</i>
 					<p> Target Client List
@@ -50,17 +50,17 @@ Dashboard - BHIMS
 					</ul>
 				</div>
 			</li>
-			<li class="nav-item ">
+			<li class="nav-item">
 				<a class="nav-link" href="#summaryreporting" data-toggle="collapse" aria-expanded="true">
 					<i class="material-icons">show_chart</i>
 					<p> Summary Table
 						<b class="caret"></b>
 					</p>
 				</a>
-				<div class="collapse" id="summaryreporting">
+				<div class="collapse show" id="summaryreporting">
 					<ul class="nav">
 						@foreach($programs as $program)
-						<li class="nav-item">
+						<li class="nav-item {{request()->is('admin/summary/'.$program->id.'/'.$current_barangay->id.'/'.$current_user->id) ? 'active' : ''}}">
 							<a href="{{URL::route('programs', [$program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
 								<span class="sidebar-normal">{{ $program->name }}</span>
 							</a>
