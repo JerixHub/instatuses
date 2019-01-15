@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Barangay;
 use App\Program;
-use App\Summary;
 use Storage;
 use File;
 
@@ -24,9 +23,8 @@ class UserController extends Controller
         $daily_registrants = $this->getDailyRegistrants();
         $barangays = Barangay::all();
         $programs = Program::all();
-        $summaries = Summary::all();
 
-        return view('admin.users.index', compact('users', 'verified', 'daily_registrants', 'barangays', 'summaries'));
+        return view('admin.users.index', compact('users', 'verified', 'daily_registrants', 'barangays', 'programs'));
     }
 
     /**
@@ -37,8 +35,8 @@ class UserController extends Controller
     public function create()
     {
         $barangays = Barangay::all();
-        $summaries = Summary::all();
-        return view('admin.users.create', compact('barangays', 'summaries'));
+        $programs = Program::all();
+        return view('admin.users.create', compact('barangays', 'programs'));
     }
 
     /**

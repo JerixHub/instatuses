@@ -21,7 +21,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => false,
                 'with_target' => true,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Family Planning',
@@ -30,7 +30,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => false,
                 'with_target' => true,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Child Care',
@@ -39,7 +39,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => false,
                 'with_target' => true,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Dental Health',
@@ -48,7 +48,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => false,
                 'with_target' => true,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Malaria',
@@ -57,7 +57,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => true,
                 'with_target' => false,
                 'with_total' => true,
-                'with_ico_code' => false,   
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Tuberculosis',
@@ -66,7 +66,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => true,
                 'with_target' => false,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Filariasis',
@@ -75,7 +75,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => true,
                 'with_target' => false,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Leprosy',
@@ -84,7 +84,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => true,
                 'with_target' => false,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Schitosomiasis',
@@ -93,7 +93,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => true,
                 'with_target' => false,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Morbidity Disease',
@@ -102,7 +102,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => false,
                 'with_target' => false,
                 'with_total' => true,
-                'with_ico_code' => true,
+                'with_icd_code' => true,
             ),
             array(
                 'name' => 'Natality',
@@ -111,7 +111,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => false,
                 'with_target' => true,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Environmental Health',
@@ -120,7 +120,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => false,
                 'with_target' => true,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
             array(
                 'name' => 'Mortality',
@@ -129,7 +129,7 @@ class ProgramSeeder extends Seeder
                 'with_trans' => false,
                 'with_target' => true,
                 'with_total' => true,
-                'with_ico_code' => false,
+                'with_icd_code' => false,
             ),
         );
 
@@ -141,7 +141,7 @@ class ProgramSeeder extends Seeder
                 'with_trans'      => $program['with_trans'],
                 'with_target'     => $program['with_target'],
                 'with_total'      => $program['with_total'],
-                'with_ico_code'   => $program['with_ico_code'],
+                'with_icd_code'   => $program['with_icd_code'],
         		'created_at'      => Carbon::now()->format('Y-m-d H:i:s'),
         		'updated_at'      => Carbon::now()->format('Y-m-d H:i:s')
         	]);

@@ -8,6 +8,11 @@ class Question extends Model
 {
     public function program()
     {
-    	return $this->belongsTo('App\Program');
+    	return $this->belongsToMany('App\Program');
     }
+
+    // public function answers()
+    // {
+    // 	return $this->hasMany('App\ProgramQuestion');
+    // }
 }

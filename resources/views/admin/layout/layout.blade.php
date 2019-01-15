@@ -14,6 +14,7 @@
 
 	<!-- Material Dashboard CSS -->
 	<link rel="stylesheet" href="{{ asset('assets/css/material-dashboard.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
 	<!-- Custom CSS -->
 	@yield('style')
@@ -24,7 +25,8 @@
 	<div class="wrapper">
 		<div class="sidebar" data-color="green" data-background-color="white">
 			<div class="logo">
-				<a href="/admin" class="simple-text logo-normal">Department of Health</a>
+				<a href="/" class="simple-text logo-mini">DOH</a>
+				<a href="/admin" class="simple-text logo-normal">Department of health</a>
 			</div>
 			<div class="sidebar-wrapper">
 				<ul class="nav">

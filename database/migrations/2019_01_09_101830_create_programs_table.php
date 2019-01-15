@@ -21,7 +21,7 @@ class CreateProgramsTable extends Migration
             $table->boolean('with_trans')->default(false);
             $table->boolean('with_target')->default(false);
             $table->boolean('with_total')->default(true);
-            $table->string('with_ico_code')->nullable();
+            $table->boolean('with_icd_code')->default(false);
             $table->timestamps();
         });
     }

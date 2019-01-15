@@ -37,7 +37,7 @@ Users Masterlist - BHIMS
 	</a>
 	<div class="collapse" id="reporting">
 		<ul class="nav">
-			<li class="nav-item ">
+			<li class="nav-item">
 				<a class="nav-link" href="#tclreporting" data-toggle="collapse" aria-expanded="true">
 					<i class="material-icons">list</i>
 					<p> Target Client List
@@ -48,20 +48,18 @@ Users Masterlist - BHIMS
 					<ul class="nav">
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">1st</span> -->
 								<span class="sidebar-normal">Part 1</span>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">2nd</span> -->
 								<span class="sidebar-normal">Part 2</span>
 							</a>
 						</li>
 					</ul>
 				</div>
 			</li>
-			<li class="nav-item ">
+			<li class="nav-item">
 				<a class="nav-link" href="#summaryreporting" data-toggle="collapse" aria-expanded="true">
 					<i class="material-icons">show_chart</i>
 					<p> Summary Table
@@ -70,10 +68,10 @@ Users Masterlist - BHIMS
 				</a>
 				<div class="collapse" id="summaryreporting">
 					<ul class="nav">
-						@foreach($summaries as $summary)
+						@foreach($programs as $program)
 						<li class="nav-item">
-							<a href="{{URL::route('show.program.barangay', [$summary->program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
-								<span class="sidebar-normal">{{ $summary->program->name }}</span>
+							<a href="{{URL::route('programs', [$program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
+								<span class="sidebar-normal">{{ $program->name }}</span>
 							</a>
 						</li>
 						@endforeach

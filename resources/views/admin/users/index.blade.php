@@ -87,10 +87,10 @@ Users Masterlist - BHIMS
 				</a>
 				<div class="collapse" id="summaryreporting">
 					<ul class="nav">
-						@foreach($summaries as $summary)
+						@foreach($programs as $program)
 						<li class="nav-item">
-							<a href="{{URL::route('show.program.barangay', [$summary->program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
-								<span class="sidebar-normal">{{ $summary->program->name }}</span>
+							<a href="{{URL::route('programs', [$program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
+								<span class="sidebar-normal">{{ $program->name }}</span>
 							</a>
 						</li>
 						@endforeach

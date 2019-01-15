@@ -11,8 +11,8 @@ class Barangay extends Model
     	return $this->belongsToMany('App\Users');
     }
 
-    public function summaries()
+    public function programs()
     {
-    	return $this->belongsToMany('App\Summary');
+    	return $this->belongsToMany('App\Program');
     }
 }

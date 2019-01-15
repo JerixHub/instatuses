@@ -19,3 +19,17 @@
 	width: 100%;
 	font-family: 
 }
+
+.sidebar .logo a.logo-mini {
+    display: none;
+}
+
+.sidebar-mini .sidebar .logo a.logo-mini{
+    opacity: 1;
+    float: left;
+    width: 50px;
+    text-align: center;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: block;
+}
