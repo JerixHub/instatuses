@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('title')
-Programs Masterlist
+Questions Masterlist
 @endsection
 
 @section('sidenav')
@@ -73,13 +73,13 @@ Programs Masterlist
 	</a>
 </li>
 @if(Auth::user()->is_superadmin)
-<li class="nav-item">
+<li class="nav-item active">
 	<a class="nav-link" href="/admin/questions">
 		<i class="material-icons">contact_support</i>
 		<p>Questions Masterlist</p>
 	</a>
 </li>
-<li class="nav-item active">
+<li class="nav-item">
 	<a class="nav-link" href="/admin/programs">
 		<i class="material-icons">apps</i>
 		<p>Programs Masterlist</p>
@@ -102,6 +102,7 @@ Programs Masterlist
 @endsection
 
 @section('navbar')
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
 	<div class="container-fluid">
         <div class="navbar-minimize">
@@ -112,7 +113,7 @@ Programs Masterlist
             </button>
 		</div>
 		<div class="navbar-wrapper">
-			<a class="navbar-brand" href="#">Programs Masterlist</a>
+			<a class="navbar-brand" href="#">Questions Masterlist</a>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="sr-only">Toggle navigation</span>
@@ -171,6 +172,7 @@ Programs Masterlist
 		</div>
 	</div>
 </nav>
+<!-- End Navbar -->
 @endsection
 
 @section('content')
@@ -179,8 +181,8 @@ Programs Masterlist
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/programs/create" class="btn btn-info">
-						<i class="material-icons">apps</i> Add New Program
+                    <a href="/admin/questions/create" class="btn btn-info">
+						<i class="material-icons">contact_support</i> Add New Question
 					</a>
                 </div>
                 <div class="card-body">
@@ -188,23 +190,23 @@ Programs Masterlist
                         <table class="table">
                             <thead class=" text-primary">
                                 <tr>
-                                    <th>Program Name</th>
-                                    <th>Barangay</th>
-                                    <th>Type</th>
+                                    <th>ID</th>
+                                    <th>Question</th>
+                                    <th>ICD CODE</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($programs as $program)
+                                @foreach($questions as $question)
                                 <tr>
-                                    <td>{{$program->name}}</td>
-                                    <td>{{$program->barangay->name}}</td>
-                                    <td>{{$program->header_type}}</td>
+                                    <td>{{$question->id}}</td>
+                                    <td>{{$question->name}}</td>
+                                    <td>{{$question->icd_code}}</td>
                                     <td class="td-actions">
-                                        <a href="/admin/programs/{{$program->id}}/edit" class="btn btn-primary btn-link btn-sm">
+                                        <a href="/admin/questions/{{$question->id}}/edit" class="btn btn-primary btn-link btn-sm">
                                             <i class="material-icons">edit</i>
                                         </a>
-                                        <a href="#" class="btn btn-danger btn-link btn-sm destroy-program" data-id="{{$program->id}}" data-token="{{csrf_token()}}">
+                                        <a href="#" class="btn btn-danger btn-link btn-sm destroy-question" data-id="{{$question->id}}" data-token="{{csrf_token()}}">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
@@ -223,7 +225,7 @@ Programs Masterlist
 @section('script')
 <script>
     $(document).ready(function(){
-        $('.destroy-program').on('click', function(){
+        $('.destroy-question').on('click', function(){
             var id = $(this).data('id');
             var token = $(this).data('token');
             var dom = $(this).closest('tr');
@@ -238,7 +240,7 @@ Programs Masterlist
             }).then((result) => {
                 if(result.value){
                     $.ajax({
-                        url: "/admin/programs/"+id,
+                        url: "/admin/questions/"+id,
                         type: 'DELETE',
                         dataType: 'json',
                         data: {

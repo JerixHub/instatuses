@@ -5,18 +5,190 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Program;
 use App\Barangay;
-use App\User;
 use App\Question;
+use App\User;
+use App\ProgramQuestion;
 use Auth;
 
 class ProgramController extends Controller
 {
-	public function index($program, $barangay, $user)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
+        return view('admin.programs.index', compact('programs'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
+        $barangays = Barangay::all();
+        $questions = Question::all();
+        return view('admin.programs.create', compact('programs', 'barangays', 'questions'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $program = new Program;
+        $program->name = $request->name;
+        $program->barangay_id = $request->barangay;
+        $program->header_type = $request->header_type;
+        if(array_key_exists('with_gender', $request->all())){
+            $program->with_gender = 1;
+        }else{
+            $program->with_gender = 0;
+        }
+        if(array_key_exists('with_trans', $request->all())){
+            $program->with_trans = 1;
+        }else{
+            $program->with_trans = 0;
+        }
+        if(array_key_exists('with_target', $request->all())){
+            $program->with_target = 1;
+        }else{
+            $program->with_target = 0;
+        }
+        if(array_key_exists('with_total', $request->all())){
+            $program->with_total = 1;
+        }else{
+            $program->with_total = 0;
+        }
+        if(array_key_exists('with_icd_code', $request->all())){
+            $program->with_icd_code = 1;
+        }else{
+            $program->with_icd_code = 0;
+        }
+        $program->save();
+
+        foreach ($request->questions as $question) {
+        	$program_question = new ProgramQuestion;
+        	$program_question->program_id = $program->id;
+        	$program_question->question_id = $question;
+        	$program_question->save();
+        }
+
+        return redirect('/admin/programs')->with('message', 'Successfully Added New Program');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {	
+    	$programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
+        $barangays = Barangay::all();
+        $questions = Question::all();
+        $current_program = Program::find($id);
+        $questions_id = array();
+        foreach ($current_program->questions as $question) {
+        	array_push($questions_id, $question->id);
+        }
+
+        return view('admin.programs.edit', compact('programs', 'barangays', 'questions','current_program', 'questions_id'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $current_program = Program::find($id);
+        $current_program->name = $request->name;
+        $current_program->barangay_id = $request->barangay;
+        $current_program->header_type = $request->header_type;
+        if(array_key_exists('with_gender', $request->all())){
+            $current_program->with_gender = 1;
+        }else{
+            $current_program->with_gender = 0;
+        }
+        if(array_key_exists('with_trans', $request->all())){
+            $current_program->with_trans = 1;
+        }else{
+            $current_program->with_trans = 0;
+        }
+        if(array_key_exists('with_target', $request->all())){
+            $current_program->with_target = 1;
+        }else{
+            $current_program->with_target = 0;
+        }
+        if(array_key_exists('with_total', $request->all())){
+            $current_program->with_total = 1;
+        }else{
+            $current_program->with_total = 0;
+        }
+        if(array_key_exists('with_icd_code', $request->all())){
+            $current_program->with_icd_code = 1;
+        }else{
+            $current_program->with_icd_code = 0;
+        }
+        $current_program->save();
+
+        $program_questions = ProgramQuestion::where('program_id',$current_program->id)->delete();
+        foreach ($request->questions as $question) {
+        	$program_question = new ProgramQuestion;
+        	$program_question->program_id = $current_program->id;
+        	$program_question->question_id = $question;
+        	$program_question->save();
+        }
+
+        return redirect('/admin/programs')->with('message', 'Successfully Updated '.$current_program->name);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $program = Program::find($id);
+        $program->delete();
+
+        return response()->json([
+            'success' => 'Record has been deleted successfully!'
+        ]);
+    }
+
+    public function showCurrentProgram($program, $barangay, $user)
 	{
-		$current_program = Program::find($program);
-		$current_barangay = Barangay::find($barangay);
-		$current_user = User::find($user);
-		$programs = Program::all();
+        $current_program = Program::where('id',$program)->where('barangay_id',$barangay)->first();
+        $current_barangay = Barangay::find($barangay);
+        $current_user = User::find($user);
+		$programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
 		$is_admin = false;
 		if(empty($current_user)){
 			abort(403);
@@ -35,42 +207,20 @@ class ProgramController extends Controller
 		}
 
 		$header = $this->getTableHeader($current_program);
-		$questions = $current_program->questions;
-		dd($questions);
-
-		$header_indicator = $this->getHeaderIndicators($current_program);
+        $questions = $current_program->questions;
 		$answers = $current_program->answers;
+		// $random_question = Question::where('program_id',$current_program->id)->inRandomOrder()->first();
 
-		$random_question = Question::where('program_id',$current_program->id)->inRandomOrder()->first();
-
-		return view('admin.programs.index', compact(
+		return view('admin.programs.showcurrent', compact(
 			'current_program',
 			'current_barangay',
 			'current_user',
 			'programs',
 			'is_admin',
-			'random_question',
 			'header',
-			'header_indicator',
 			'answers',
 			'questions')
 		);
-	}
-
-	public function getHeaderIndicators($current_program)
-	{
-		$header_type = $current_program->header_type;
-		if ($header_type == 'date') {
-			return $this->getDatesArray();
-		}elseif($header_type == 'quarterly'){
-			return $this->getQuarterlyDateArray();
-		}elseif($header_type == 'age_monthly'){
-			return $this->getAgeMonthlyArray();
-		}
-	}
-
-	public function getTableBody($current_program){
-
 	}
 
 	public function getTableHeader($current_program){
@@ -228,7 +378,7 @@ class ProgramController extends Controller
 				if($current_program->with_total){
 					$html .= '<th>M</th><th>F</th><th>T</th>';
 				}
-				
+
 				$html .= '</tr>';
 			}elseif($current_program->with_gender && !$current_program->with_trans){
 				$ages = $this->getAgeMonthlyArray();

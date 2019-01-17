@@ -16,6 +16,8 @@ class CreateProgramsTable extends Migration
         Schema::create('programs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->unsignedInteger('barangay_id');
+            $table->foreign('barangay_id')->references('id')->on('barangays')->onDelete('cascade');
             $table->enum('header_type', ['date','age_monthly','age_yearly','quarterly']);
             $table->boolean('with_gender')->default(false);
             $table->boolean('with_trans')->default(false);

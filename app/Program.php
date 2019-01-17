@@ -11,9 +11,9 @@ class Program extends Model
     	return $this->belongsToMany('App\Question');
     }
 
-    public function barangays()
+    public function barangay()
     {
-    	return $this->belongsToMany('App\Barangay');
+    	return $this->belongsTo('App\Barangay');
     }
 
     public function answers()

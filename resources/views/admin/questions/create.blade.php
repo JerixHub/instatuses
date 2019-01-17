@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('title')
-Programs Masterlist
+Questions Masterlist
 @endsection
 
 @section('sidenav')
@@ -73,13 +73,13 @@ Programs Masterlist
 	</a>
 </li>
 @if(Auth::user()->is_superadmin)
-<li class="nav-item">
+<li class="nav-item active">
 	<a class="nav-link" href="/admin/questions">
 		<i class="material-icons">contact_support</i>
 		<p>Questions Masterlist</p>
 	</a>
 </li>
-<li class="nav-item active">
+<li class="nav-item">
 	<a class="nav-link" href="/admin/programs">
 		<i class="material-icons">apps</i>
 		<p>Programs Masterlist</p>
@@ -102,6 +102,7 @@ Programs Masterlist
 @endsection
 
 @section('navbar')
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
 	<div class="container-fluid">
         <div class="navbar-minimize">
@@ -112,7 +113,7 @@ Programs Masterlist
             </button>
 		</div>
 		<div class="navbar-wrapper">
-			<a class="navbar-brand" href="#">Programs Masterlist</a>
+			<a class="navbar-brand" href="#">Add New Question</a>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="sr-only">Toggle navigation</span>
@@ -171,95 +172,36 @@ Programs Masterlist
 		</div>
 	</div>
 </nav>
+<!-- End Navbar -->
 @endsection
 
 @section('content')
 <div class="container-fluid">
 	<div class="row">
         <div class="col-lg-12 col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <a href="/admin/programs/create" class="btn btn-info">
-						<i class="material-icons">apps</i> Add New Program
-					</a>
+            <div class="card ">
+                <div class="card-header card-header-rose card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">contact_support</i>
+                    </div>
+                    <h4 class="card-title">Question Form</h4>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead class=" text-primary">
-                                <tr>
-                                    <th>Program Name</th>
-                                    <th>Barangay</th>
-                                    <th>Type</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($programs as $program)
-                                <tr>
-                                    <td>{{$program->name}}</td>
-                                    <td>{{$program->barangay->name}}</td>
-                                    <td>{{$program->header_type}}</td>
-                                    <td class="td-actions">
-                                        <a href="/admin/programs/{{$program->id}}/edit" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </a>
-                                        <a href="#" class="btn btn-danger btn-link btn-sm destroy-program" data-id="{{$program->id}}" data-token="{{csrf_token()}}">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                    <form method="POST" action="{{ route('questions.store') }}">
+                        @csrf
+                        <div class="form-group bmd-form-group">
+                            <label for="question" class="bmd-label-floating">Question</label>
+                            <input type="text" class="form-control" id="question" name="question">
+                        </div>
+                        <div class="form-group bmd-form-group">
+                            <label for="icd_code" class="bmd-label-floating">ICD CODE</label>
+                            <input type="text" class="form-control" id="icd_code" name="icd_code">
+                        </div>
+                        <button type="submit" class="btn btn-fill btn-rose">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
 	</div>
 </div>
-@endsection
-
-@section('script')
-<script>
-    $(document).ready(function(){
-        $('.destroy-program').on('click', function(){
-            var id = $(this).data('id');
-            var token = $(this).data('token');
-            var dom = $(this).closest('tr');
-            swal({
-                title:"Are you sure?",
-                text: "You won't be able to revert this!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#e53935',
-                cancelButtonColor: '#26c6da',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if(result.value){
-                    $.ajax({
-                        url: "/admin/programs/"+id,
-                        type: 'DELETE',
-                        dataType: 'json',
-                        data: {
-                            "id": id,
-                            "_method": "DELETE",
-                            "_token": token,
-                        },
-                        success: function(data)
-                        {
-                            swal({
-                                title: 'Deleted!',
-                                text: data['success'],
-                                type: 'success',
-                                timer: 1500
-                            });
-                            dom.fadeOut();
-                        }
-                    });
-                }
-            });
-        });
-    });
-</script>
 @endsection

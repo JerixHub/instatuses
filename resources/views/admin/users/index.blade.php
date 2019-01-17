@@ -35,12 +35,6 @@ Users Masterlist - BHIMS
 @section('sidenav')
 <li class="nav-item">
 	<a class="nav-link" href="/admin">
-		<i class="material-icons">dashboard</i>
-		<p>Dashboard</p>
-	</a>
-</li>
-<li class="nav-item">
-	<a class="nav-link" href="/admin/analytics">
 		<i class="material-icons">person</i>
 		<p>Analytics</p>
 	</a>
@@ -89,7 +83,7 @@ Users Masterlist - BHIMS
 					<ul class="nav">
 						@foreach($programs as $program)
 						<li class="nav-item">
-							<a href="{{URL::route('programs', [$program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
+							<a href="{{URL::route('show.current.program', [$program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
 								<span class="sidebar-normal">{{ $program->name }}</span>
 							</a>
 						</li>
@@ -106,10 +100,31 @@ Users Masterlist - BHIMS
 		<p>Users Masterlist</p>
 	</a>
 </li>
+@if(Auth::user()->is_superadmin)
+<li class="nav-item">
+	<a class="nav-link" href="/admin/questions">
+		<i class="material-icons">contact_support</i>
+		<p>Questions Masterlist</p>
+	</a>
+</li>
+<li class="nav-item active">
+	<a class="nav-link" href="/admin/programs">
+		<i class="material-icons">apps</i>
+		<p>Programs Masterlist</p>
+	</a>
+</li>
+@endif
 <li class="nav-item">
 	<a class="nav-link" href="/admin/settings">
 		<i class="material-icons">bubble_chart</i>
 		<p>Settings</p>
+	</a>
+</li>
+<li class="nav-item">
+	<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
+	<a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+		<i class="material-icons">arrow_back</i>
+		<p>Logout</p>
 	</a>
 </li>
 @endsection
@@ -118,6 +133,13 @@ Users Masterlist - BHIMS
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
 	<div class="container-fluid">
+        <div class="navbar-minimize">
+			<button id="minimizeSidebar" class="btn btn-just-icon btn-white btn-fab btn-round">
+				<i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
+				<i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
+				<div class="ripple-container"></div>
+            </button>
+		</div>
 		<div class="navbar-wrapper">
 			<a class="navbar-brand" href="#">Users Masterlist</a>
 		</div>
@@ -172,9 +194,6 @@ Users Masterlist - BHIMS
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
 						<a class="dropdown-item" href="#">Profile</a>
 						<a class="dropdown-item" href="#">Settings</a>
-						<div class="dropdown-divider"></div>
-						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
-						<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> {{ __('Logout') }}</a>
 					</div>
 				</li>
 			</ul>

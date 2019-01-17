@@ -7,12 +7,6 @@ Dashboard - BHIMS
 @section('sidenav')
 <li class="nav-item active">
 	<a class="nav-link" href="/admin">
-		<i class="material-icons">dashboard</i>
-		<p>Dashboard</p>
-	</a>
-</li>
-<li class="nav-item">
-	<a class="nav-link" href="/admin/analytics">
 		<i class="material-icons">person</i>
 		<p>Analytics</p>
 	</a>
@@ -36,14 +30,14 @@ Dashboard - BHIMS
 				<div class="collapse" id="tclreporting">
 					<ul class="nav">
 						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">1st</span> -->
+							<a href="/admin/targets" class="nav-link">
+								<span class="sidebar-mini">P1</span>
 								<span class="sidebar-normal">Part 1</span>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">2nd</span> -->
+								<span class="sidebar-mini">P2</span>
 								<span class="sidebar-normal">Part 2</span>
 							</a>
 						</li>
@@ -61,7 +55,7 @@ Dashboard - BHIMS
 					<ul class="nav">
 						@foreach($programs as $program)
 						<li class="nav-item">
-							<a href="{{URL::route('programs', [$program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
+							<a href="{{URL::route('show.current.program', [$program->id, Auth::user()->barangay, Auth::user()->id])}}" class="nav-link">
 								<span class="sidebar-normal">{{ $program->name }}</span>
 							</a>
 						</li>
@@ -78,10 +72,31 @@ Dashboard - BHIMS
 		<p>Users Masterlist</p>
 	</a>
 </li>
+@if(Auth::user()->is_superadmin)
+<li class="nav-item">
+	<a class="nav-link" href="/admin/questions">
+		<i class="material-icons">contact_support</i>
+		<p>Questions Masterlist</p>
+	</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/admin/programs">
+		<i class="material-icons">apps</i>
+		<p>Programs Masterlist</p>
+	</a>
+</li>
+@endif
 <li class="nav-item">
 	<a class="nav-link" href="/admin/settings">
 		<i class="material-icons">bubble_chart</i>
 		<p>Settings</p>
+	</a>
+</li>
+<li class="nav-item">
+	<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
+	<a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+		<i class="material-icons">arrow_back</i>
+		<p>Logout</p>
 	</a>
 </li>
 @endsection
@@ -144,9 +159,6 @@ Dashboard - BHIMS
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
 						<a class="dropdown-item" href="#">Profile</a>
 						<a class="dropdown-item" href="#">Settings</a>
-						<div class="dropdown-divider"></div>
-						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
-						<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> {{ __('Logout') }}</a>
 					</div>
 				</li>
 			</ul>

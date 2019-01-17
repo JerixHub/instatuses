@@ -22,6 +22,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => true,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Family Planning',
@@ -31,6 +32,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => true,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Child Care',
@@ -40,6 +42,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => true,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Dental Health',
@@ -49,6 +52,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => true,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Malaria',
@@ -58,6 +62,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => false,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Tuberculosis',
@@ -67,6 +72,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => false,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Filariasis',
@@ -76,6 +82,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => false,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Leprosy',
@@ -85,6 +92,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => false,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Schitosomiasis',
@@ -94,6 +102,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => false,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Morbidity Disease',
@@ -103,6 +112,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => false,
                 'with_total' => true,
                 'with_icd_code' => true,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Natality',
@@ -112,6 +122,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => true,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Environmental Health',
@@ -121,6 +132,7 @@ class ProgramSeeder extends Seeder
                 'with_target' => true,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
             array(
                 'name' => 'Mortality',
@@ -130,12 +142,14 @@ class ProgramSeeder extends Seeder
                 'with_target' => true,
                 'with_total' => true,
                 'with_icd_code' => false,
+                'barangay_id' => 1
             ),
         );
 
         foreach ($programs as $program) {
         	DB::table('programs')->insert([
-        		'name'            => $program['name'],
+                'name'            => $program['name'],
+                'barangay_id'     => $program['barangay_id'],
                 'header_type'     => $program['header_type'],
                 'with_gender'     => $program['with_gender'],
                 'with_trans'      => $program['with_trans'],

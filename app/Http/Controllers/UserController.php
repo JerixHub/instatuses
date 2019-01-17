@@ -8,6 +8,7 @@ use App\Barangay;
 use App\Program;
 use Storage;
 use File;
+use Auth;
 
 class UserController extends Controller
 {
@@ -22,7 +23,7 @@ class UserController extends Controller
         $verified = $this->getVerifiedUsers();
         $daily_registrants = $this->getDailyRegistrants();
         $barangays = Barangay::all();
-        $programs = Program::all();
+        $programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
 
         return view('admin.users.index', compact('users', 'verified', 'daily_registrants', 'barangays', 'programs'));
     }
@@ -35,7 +36,7 @@ class UserController extends Controller
     public function create()
     {
         $barangays = Barangay::all();
-        $programs = Program::all();
+        $programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
         return view('admin.users.create', compact('barangays', 'programs'));
     }
 

@@ -29,7 +29,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::get('/', 'AdminController@dashboard');
-	Route::resource('/users','UserController');
+    Route::resource('/users','UserController');
+    Route::resource('/programs', 'ProgramController');
+    Route::resource('/questions','QuestionController');
+    Route::resource('/targets', 'TargetClientController');
 	Route::patch('/users/approve/{user}', 'UserController@approveUser')->name('users.approve');
-	Route::get('/summary/{program}/{barangay}/{user}', 'ProgramController@index')->name('programs');
+	Route::get('/programs/{program}/{barangay}/{user}', 'ProgramController@showCurrentProgram')->name('show.current.program');
 });

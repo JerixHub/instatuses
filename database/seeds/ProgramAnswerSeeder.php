@@ -19,24 +19,9 @@ class ProgramAnswerSeeder extends Seeder
         	DB::table('program_question')->insert([
         		'program_id' => 8,
         		'question_id' => $question->id,
-        		'gender'	=> 'M',
-        		'answer' 	=> '3',
-        		'created_at'=> Carbon::now()->format('Y-m-d H:i:s'),
-        		'updated_at'=> Carbon::now()->format('Y-m-d H:i:s'),
-        	]);
-        	DB::table('program_question')->insert([
-        		'program_id' => 8,
-        		'question_id' => $question->id,
-        		'gender'	=> 'F',
-        		'answer' 	=> '6',
-        		'created_at'=> Carbon::now()->format('Y-m-d H:i:s'),
-        		'updated_at'=> Carbon::now()->format('Y-m-d H:i:s'),
-        	]);
-        	DB::table('program_question')->insert([
-        		'program_id' => 8,
-        		'question_id' => $question->id,
-        		'gender'	=> 'T',
-        		'answer' 	=> '2',
+                'f'	=> '2',
+                'm' => '3',
+                't' => 12,
         		'created_at'=> Carbon::now()->format('Y-m-d H:i:s'),
         		'updated_at'=> Carbon::now()->format('Y-m-d H:i:s'),
         	]);

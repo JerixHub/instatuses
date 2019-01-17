@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('title')
-Programs Masterlist
+Questions Masterlist
 @endsection
 
 @section('sidenav')
@@ -30,14 +30,14 @@ Programs Masterlist
 				<div class="collapse" id="tclreporting">
 					<ul class="nav">
 						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">1st</span> -->
+							<a href="/admin/targets" class="nav-link">
+								<span class="sidebar-mini">P1</span>
 								<span class="sidebar-normal">Part 1</span>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">2nd</span> -->
+								<span class="sidebar-mini">P2</span>
 								<span class="sidebar-normal">Part 2</span>
 							</a>
 						</li>
@@ -73,13 +73,13 @@ Programs Masterlist
 	</a>
 </li>
 @if(Auth::user()->is_superadmin)
-<li class="nav-item">
+<li class="nav-item active">
 	<a class="nav-link" href="/admin/questions">
 		<i class="material-icons">contact_support</i>
 		<p>Questions Masterlist</p>
 	</a>
 </li>
-<li class="nav-item active">
+<li class="nav-item">
 	<a class="nav-link" href="/admin/programs">
 		<i class="material-icons">apps</i>
 		<p>Programs Masterlist</p>
@@ -102,6 +102,7 @@ Programs Masterlist
 @endsection
 
 @section('navbar')
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
 	<div class="container-fluid">
         <div class="navbar-minimize">
@@ -112,7 +113,7 @@ Programs Masterlist
             </button>
 		</div>
 		<div class="navbar-wrapper">
-			<a class="navbar-brand" href="#">Programs Masterlist</a>
+			<a class="navbar-brand" href="#">Questions Masterlist</a>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="sr-only">Toggle navigation</span>
@@ -171,6 +172,7 @@ Programs Masterlist
 		</div>
 	</div>
 </nav>
+<!-- End Navbar -->
 @endsection
 
 @section('content')
@@ -179,37 +181,69 @@ Programs Masterlist
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/programs/create" class="btn btn-info">
-						<i class="material-icons">apps</i> Add New Program
+                    <a href="/admin/targets/create" class="btn btn-info">
+						<i class="material-icons">face</i> Add New Client
 					</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table">
-                            <thead class=" text-primary">
+                        <table class="table table-striped table-bordered">
+                            <thead class="text-info">
                                 <tr>
-                                    <th>Program Name</th>
-                                    <th>Barangay</th>
-                                    <th>Type</th>
+                                    <th rowspan="2">Date of Registration</th>
+                                    <th rowspan="2">Date of Birth</th>
+                                    <th rowspan="2">Family Serial Number</th>
+                                    <th rowspan="2">NHTS</th>
+                                    <th rowspan="2">Name of Child</th>
+                                    <th rowspan="2" class="verticalTableHeader"><p>Weight</p></th>
+                                    <th rowspan="2" class="verticalTableHeader"><p>Length/Height</p></th>
+                                    <th rowspan="2">Sex</th>
+                                    <th rowspan="2">Mother's Name</th>
+                                    <th rowspan="2">Address</th>
+                                    <th colspan="2">Date Newborn Screening</th>
+                                    <th colspan="2">Child Protect at Birth</th>
                                     <th>Actions</th>
+                                </tr>
+                                <tr>
+                                	<th>Referrarl</th>
+                                	<th>Done</th>
+                                	<th>TT Status</th>
+                                	<th>Date Assessed</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($programs as $program)
                                 <tr>
-                                    <td>{{$program->name}}</td>
-                                    <td>{{$program->barangay->name}}</td>
-                                    <td>{{$program->header_type}}</td>
-                                    <td class="td-actions">
-                                        <a href="/admin/programs/{{$program->id}}/edit" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </a>
-                                        <a href="#" class="btn btn-danger btn-link btn-sm destroy-program" data-id="{{$program->id}}" data-token="{{csrf_token()}}">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>
+                                	<td>1-16-16</td>
+                                	<td>1-15-16</td>
+                                	<td>322</td>
+                                	<td></td>
+                                	<td>Nathan Avery Destajo</td>
+                                	<td class="text-center">8</td>
+                                	<td class="text-center">50</td>
+                                	<td>M</td>
+                                	<td>Ivy Cator</td>
+                                	<td>P1 Rizal Diez</td>
+                                	<td>1-15-16</td>
+                                	<td>1-18-16</td>
+                                	<td></td>
+                                	<td>1-15-16</td>
                                 </tr>
-                                @endforeach
+                                <tr>
+                                	<td>1-16-16</td>
+                                	<td>1-15-16</td>
+                                	<td>322</td>
+                                	<td></td>
+                                	<td>Nathan Avery Destajo</td>
+                                	<td class="text-center">8</td>
+                                	<td class="text-center">50</td>
+                                	<td>M</td>
+                                	<td>Ivy Cator</td>
+                                	<td>P1 Rizal Diez</td>
+                                	<td>1-15-16</td>
+                                	<td>1-18-16</td>
+                                	<td></td>
+                                	<td>1-15-16</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -223,7 +257,7 @@ Programs Masterlist
 @section('script')
 <script>
     $(document).ready(function(){
-        $('.destroy-program').on('click', function(){
+        $('.destroy-question').on('click', function(){
             var id = $(this).data('id');
             var token = $(this).data('token');
             var dom = $(this).closest('tr');
@@ -238,7 +272,7 @@ Programs Masterlist
             }).then((result) => {
                 if(result.value){
                     $.ajax({
-                        url: "/admin/programs/"+id,
+                        url: "/admin/questions/"+id,
                         type: 'DELETE',
                         dataType: 'json',
                         data: {
