@@ -32,8 +32,7 @@ class ProgramController extends Controller
     {
         $programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
         $barangays = Barangay::all();
-        $questions = Question::all();
-        return view('admin.programs.create', compact('programs', 'barangays', 'questions'));
+        return view('admin.programs.create', compact('programs', 'barangays'));
     }
 
     /**
@@ -75,13 +74,6 @@ class ProgramController extends Controller
         }
         $program->save();
 
-        foreach ($request->questions as $question) {
-        	$program_question = new ProgramQuestion;
-        	$program_question->program_id = $program->id;
-        	$program_question->question_id = $question;
-        	$program_question->save();
-        }
-
         return redirect('/admin/programs')->with('message', 'Successfully Added New Program');
     }
 
@@ -106,14 +98,8 @@ class ProgramController extends Controller
     {	
     	$programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
         $barangays = Barangay::all();
-        $questions = Question::all();
         $current_program = Program::find($id);
-        $questions_id = array();
-        foreach ($current_program->questions as $question) {
-        	array_push($questions_id, $question->id);
-        }
-
-        return view('admin.programs.edit', compact('programs', 'barangays', 'questions','current_program', 'questions_id'));
+        return view('admin.programs.edit', compact('programs', 'barangays','current_program'));
     }
 
     /**
@@ -155,14 +141,6 @@ class ProgramController extends Controller
             $current_program->with_icd_code = 0;
         }
         $current_program->save();
-
-        $program_questions = ProgramQuestion::where('program_id',$current_program->id)->delete();
-        foreach ($request->questions as $question) {
-        	$program_question = new ProgramQuestion;
-        	$program_question->program_id = $current_program->id;
-        	$program_question->question_id = $question;
-        	$program_question->save();
-        }
 
         return redirect('/admin/programs')->with('message', 'Successfully Updated '.$current_program->name);
     }
@@ -207,9 +185,11 @@ class ProgramController extends Controller
 		}
 
 		$header = $this->getTableHeader($current_program);
-        $questions = $current_program->questions;
+        $questions = ProgramQuestion::with('question')->where('program_id', $program)->whereYear('created_at', date('Y'))->get();
+        
 		$answers = $current_program->answers;
-		// $random_question = Question::where('program_id',$current_program->id)->inRandomOrder()->first();
+		$random_question = ProgramQuestion::with('question')->where('program_id', $program)->whereYear('created_at', date('Y'))->inRandomOrder()->first();
+		$random_question = $random_question->question;
 
 		return view('admin.programs.showcurrent', compact(
 			'current_program',
@@ -219,7 +199,8 @@ class ProgramController extends Controller
 			'is_admin',
 			'header',
 			'answers',
-			'questions')
+			'questions',
+			'random_question')
 		);
 	}
 

@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('title')
-Questions Masterlist
+Program Questions Masterlist
 @endsection
 
 @section('sidenav')
@@ -31,13 +31,13 @@ Questions Masterlist
 					<ul class="nav">
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">1st</span> -->
+								<span class="sidebar-mini">P1</span>
 								<span class="sidebar-normal">Part 1</span>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">2nd</span> -->
+								<span class="sidebar-mini">P2</span>
 								<span class="sidebar-normal">Part 2</span>
 							</a>
 						</li>
@@ -73,7 +73,7 @@ Questions Masterlist
 	</a>
 </li>
 @if(Auth::user()->is_superadmin)
-<li class="nav-item active">
+<li class="nav-item">
 	<a class="nav-link" href="/admin/questions">
 		<i class="material-icons">contact_support</i>
 		<p>Questions Masterlist</p>
@@ -85,7 +85,7 @@ Questions Masterlist
 		<p>Programs Masterlist</p>
 	</a>
 </li>
-<li class="nav-item">
+<li class="nav-item active">
 	<a class="nav-link" href="/admin/program-questions">
 		<i class="material-icons">code</i>
 		<p>Program Answers</p>
@@ -119,7 +119,7 @@ Questions Masterlist
             </button>
 		</div>
 		<div class="navbar-wrapper">
-			<a class="navbar-brand" href="#">Add New Question</a>
+			<a class="navbar-brand" href="#">Program Answers Masterlist</a>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="sr-only">Toggle navigation</span>
@@ -185,30 +185,107 @@ Questions Masterlist
 <div class="container-fluid">
 	<div class="row">
         <div class="col-lg-12 col-md-12">
-            <div class="card ">
-                <div class="card-header card-header-rose card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">contact_support</i>
-                    </div>
-                    <h4 class="card-title">Question Form</h4>
+            <div class="card">
+                <div class="card-header">
+                    <a href="/admin/program-questions/create" class="btn btn-info">
+						<i class="material-icons">contact_support</i> Add New Program Answers
+					</a>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('questions.update', $id) }}">
-                        @csrf
-                        @method('patch')
-                        <div class="form-group bmd-form-group">
-                            <label for="question" class="bmd-label-floating">Question</label>
-                            <input type="text" class="form-control" id="question" name="question" value="{{$current_question->name}}">
-                        </div>
-                        <div class="form-group bmd-form-group">
-                            <label for="icd_code" class="bmd-label-floating">ICD CODE</label>
-                            <input type="text" class="form-control" id="icd_code" name="icd_code" value="{{$current_question->icd_code}}">
-                        </div>
-                        <button type="submit" class="btn btn-fill btn-rose">Submit</button>
-                    </form>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>Program Name</th>
+                                    <th>Barangay</th>
+                                    <th>Questions</th>
+                                    <th>M</th>
+                                    <th>F</th>
+                                    <th>T</th>
+                                    <th>1st Quarter</th>
+                                    <th>2nd Quarter</th>
+                                    <th>3rd Quarter</th>
+                                    <th>4th Quarter</th>
+                                    <th>Target</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($program_questions as $program_question)
+                                <tr>
+                                    <td>{{$program_question->program->name}}</td>
+                                    <td>{{$program_question->program->barangay->name}}</td>
+                                    <td>{{$program_question->question->name}}</td>
+                                    <td>{{$program_question->m}}</td>
+                                    <td>{{$program_question->f}}</td>
+                                    <td>{{$program_question->t}}</td>
+                                    <td>{{$program_question->first_q}}</td>
+                                    <td>{{$program_question->second_q}}</td>
+                                    <td>{{$program_question->third_q}}</td>
+                                    <td>{{$program_question->fourth_q}}</td>
+                                    <td>{{$program_question->target}}</td>
+                                    <td>{{$program_question->created_at->format('F Y')}}</td>
+                                    <td class="td-actions">
+                                        <a href="/admin/program-questions/{{$program_question->id}}/edit" class="btn btn-primary btn-link btn-sm">
+                                            <i class="material-icons">edit</i>
+                                        </a>
+                                        <a href="#" class="btn btn-danger btn-link btn-sm destroy-program-question" data-id="{{$program_question->id}}" data-token="{{csrf_token()}}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
 	</div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function(){
+        $('.destroy-program-question').on('click', function(){
+            var id = $(this).data('id');
+            var token = $(this).data('token');
+            var dom = $(this).closest('tr');
+            swal({
+                title:"Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#e53935',
+                cancelButtonColor: '#26c6da',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if(result.value){
+                    $.ajax({
+                        url: "/admin/program-questions/"+id,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        data: {
+                            "id": id,
+                            "_method": "DELETE",
+                            "_token": token,
+                        },
+                        success: function(data)
+                        {
+                            swal({
+                                title: 'Deleted!',
+                                text: data['success'],
+                                type: 'success',
+                                timer: 1500
+                            });
+                            dom.fadeOut();
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 @endsection

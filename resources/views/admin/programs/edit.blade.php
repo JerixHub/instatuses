@@ -31,13 +31,13 @@ Programs Masterlist
 					<ul class="nav">
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">1st</span> -->
+								<span class="sidebar-mini">P1</span>
 								<span class="sidebar-normal">Part 1</span>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">2nd</span> -->
+								<span class="sidebar-mini">P2</span>
 								<span class="sidebar-normal">Part 2</span>
 							</a>
 						</li>
@@ -83,6 +83,12 @@ Programs Masterlist
 	<a class="nav-link" href="/admin/programs">
 		<i class="material-icons">apps</i>
 		<p>Programs Masterlist</p>
+	</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/admin/program-questions">
+		<i class="material-icons">code</i>
+		<p>Program Answers</p>
 	</a>
 </li>
 @endif
@@ -292,23 +298,6 @@ Programs Masterlist
                                             <span class="check"></span>
                                         </span>
                                     </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label">Questionnaires</label>
-                            <div class="col-sm-10">
-                                <div class="form-group bmd-form-group">
-                                    <select multiple class="form-control selectpicker" data-live-search="true" data-style="btn btn-link" name="questions[]">
-                                        @foreach($questions as $question)
-                                        @if(in_array($question->id, $questions_id))
-										<option value="{{$question->id}}" selected>{{$question->name}}</option>
-										@else
-										<option value="{{$question->id}}">{{$question->name}}</option>
-                                        @endif
-                                        
-                                        @endforeach
-                                    </select>
                                 </div>
                             </div>
                         </div>

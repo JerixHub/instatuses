@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('title')
-Questions Masterlist
+Add New Program Answer
 @endsection
 
 @section('sidenav')
@@ -31,13 +31,13 @@ Questions Masterlist
 					<ul class="nav">
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">1st</span> -->
+								<span class="sidebar-mini">P1</span>
 								<span class="sidebar-normal">Part 1</span>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">2nd</span> -->
+								<span class="sidebar-mini">P2</span>
 								<span class="sidebar-normal">Part 2</span>
 							</a>
 						</li>
@@ -73,7 +73,7 @@ Questions Masterlist
 	</a>
 </li>
 @if(Auth::user()->is_superadmin)
-<li class="nav-item active">
+<li class="nav-item">
 	<a class="nav-link" href="/admin/questions">
 		<i class="material-icons">contact_support</i>
 		<p>Questions Masterlist</p>
@@ -85,7 +85,7 @@ Questions Masterlist
 		<p>Programs Masterlist</p>
 	</a>
 </li>
-<li class="nav-item">
+<li class="nav-item active">
 	<a class="nav-link" href="/admin/program-questions">
 		<i class="material-icons">code</i>
 		<p>Program Answers</p>
@@ -108,18 +108,17 @@ Questions Masterlist
 @endsection
 
 @section('navbar')
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
 	<div class="container-fluid">
-        <div class="navbar-minimize">
+		<div class="navbar-minimize">
 			<button id="minimizeSidebar" class="btn btn-just-icon btn-white btn-fab btn-round">
 				<i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
 				<i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
 				<div class="ripple-container"></div>
-            </button>
+			</button>
 		</div>
 		<div class="navbar-wrapper">
-			<a class="navbar-brand" href="#">Add New Question</a>
+			<a class="navbar-brand" href="#">Programs Masterlist</a>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="sr-only">Toggle navigation</span>
@@ -178,37 +177,89 @@ Questions Masterlist
 		</div>
 	</div>
 </nav>
-<!-- End Navbar -->
 @endsection
 
 @section('content')
 <div class="container-fluid">
 	<div class="row">
-        <div class="col-lg-12 col-md-12">
-            <div class="card ">
-                <div class="card-header card-header-rose card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">contact_support</i>
-                    </div>
-                    <h4 class="card-title">Question Form</h4>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('questions.update', $id) }}">
-                        @csrf
-                        @method('patch')
-                        <div class="form-group bmd-form-group">
-                            <label for="question" class="bmd-label-floating">Question</label>
-                            <input type="text" class="form-control" id="question" name="question" value="{{$current_question->name}}">
-                        </div>
-                        <div class="form-group bmd-form-group">
-                            <label for="icd_code" class="bmd-label-floating">ICD CODE</label>
-                            <input type="text" class="form-control" id="icd_code" name="icd_code" value="{{$current_question->icd_code}}">
-                        </div>
-                        <button type="submit" class="btn btn-fill btn-rose">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+		<div class="col-lg-12 col-md-12">
+			@if(session()->has('msg'))
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<i class="material-icons">close</i>
+				</button>
+				<span>
+					<b> Failed! </b> {{ session()->get('msg') }}
+				</span>
+			</div>
+			@endif
+			<div class="card">
+				<div class="card-header card-header-rose card-header-icon">
+					<div class="card-icon">
+						<i class="material-icons">apps</i>
+					</div>
+					<h4 class="card-title">Program Answer Form</h4>
+				</div>
+				<div class="card-body">
+					<form method="POST" action="{{ route('program-questions.store') }}" class="form-horizontal">
+						@csrf
+						<div class="row">
+							<label class="col-sm-2 col-form-label">Program</label>
+							<div class="col-sm-10">
+								<div class="form-group bmd-form-group">
+									<select class="form-control selectpicker" title="Choose Program" data-style="btn btn-link" name="program" data-token="{{csrf_token()}}">
+										@foreach($program_answers as $program_answer)
+										<option value="{{$program_answer->id}}">{{$program_answer->name}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row question-row">
+							<label class="col-sm-2 col-form-label">Questions</label>
+							<div class="col-sm-10">
+								<div class="form-group bmd-form-group">
+									<select class="form-control selectpicker" data-style="btn btn-link" name="question">
+										@foreach($program_questions as $program_question)
+										<option value="{{$program_question->id}}">{{$program_question->name}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-fill btn-rose">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+@endsection
+
+@section('script')
+<script>
+	$(document).ready(function(){
+		$('select[name=program]').on('change', function(){
+			$('.additional-forms').remove();
+			var id = $(this).val();
+			var token = $(this).data('token');
+			$.ajax({
+				method: "GET",
+				url: '/admin/get-selected-program/'+id,
+				data:{
+					"id": id,
+					"_method": "GET",
+					"_token": token,
+				},
+				success: function($data){
+					$('.question-row').after($data['data']);
+					$('.datetimepicker').datetimepicker({
+						format: 'YYYY-MM-DD HH:mm:ss'
+					});
+				}
+			});
+
+		});
+	});
+</script>
 @endsection

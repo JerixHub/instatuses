@@ -85,6 +85,12 @@ Questions Masterlist
 		<p>Programs Masterlist</p>
 	</a>
 </li>
+<li class="nav-item">
+	<a class="nav-link" href="/admin/program-questions">
+		<i class="material-icons">code</i>
+		<p>Program Answers</p>
+	</a>
+</li>
 @endif
 <li class="nav-item">
 	<a class="nav-link" href="/admin/settings">

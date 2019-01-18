@@ -22,6 +22,10 @@ class ProgramQuestion extends Migration
             $table->integer('m')->nullable();
             $table->integer('f')->nullable();
             $table->integer('t')->nullable();
+            $table->integer('first_q')->nullable();
+            $table->integer('second_q')->nullable();
+            $table->integer('third_q')->nullable();
+            $table->integer('fourth_q')->nullable();
             $table->integer('target')->nullable();
             $table->timestamps();
         });

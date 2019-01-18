@@ -15,6 +15,5 @@ class DatabaseSeeder extends Seeder
         $this->call(SuperAdminSeeder::class);
         $this->call(ProgramSeeder::class);
         $this->call(QuestionSeeder::class);
-        $this->call(ProgramAnswerSeeder::class);
     }
 }

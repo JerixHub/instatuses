@@ -31,13 +31,13 @@ Programs Masterlist
 					<ul class="nav">
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">1st</span> -->
+								<span class="sidebar-mini">P1</span>
 								<span class="sidebar-normal">Part 1</span>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="#" class="nav-link">
-								<!-- <span class="sidebar-mini">2nd</span> -->
+								<span class="sidebar-mini">P2</span>
 								<span class="sidebar-normal">Part 2</span>
 							</a>
 						</li>
@@ -85,6 +85,12 @@ Programs Masterlist
 		<p>Programs Masterlist</p>
 	</a>
 </li>
+<li class="nav-item">
+	<a class="nav-link" href="/admin/program-questions">
+		<i class="material-icons">code</i>
+		<p>Program Answers</p>
+	</a>
+</li>
 @endif
 <li class="nav-item">
 	<a class="nav-link" href="/admin/settings">
@@ -104,12 +110,12 @@ Programs Masterlist
 @section('navbar')
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
 	<div class="container-fluid">
-        <div class="navbar-minimize">
+		<div class="navbar-minimize">
 			<button id="minimizeSidebar" class="btn btn-just-icon btn-white btn-fab btn-round">
 				<i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
 				<i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
 				<div class="ripple-container"></div>
-            </button>
+			</button>
 		</div>
 		<div class="navbar-wrapper">
 			<a class="navbar-brand" href="#">Programs Masterlist</a>
@@ -176,137 +182,125 @@ Programs Masterlist
 @section('content')
 <div class="container-fluid">
 	<div class="row">
-        <div class="col-lg-12 col-md-12">
-            <div class="card">
-                <div class="card-header card-header-rose card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">apps</i>
-                    </div>
-                    <h4 class="card-title">Program Form</h4>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('programs.store') }}" class="form-horizontal">
-                        @csrf
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label">Program Name</label>
-                            <div class="col-sm-10">
-                                <div class="form-group bmd-form-group">
-                                    <input type="text" class="form-control" name="name">
-                                    <span class="bmd-help">Name of the program i.e. Feeding Program</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label">Barangay</label>
-                            <div class="col-sm-10">
-                                <div class="form-group bmd-form-group">
-                                    <select class="form-control" data-style="btn btn-link" name="barangay">
-                                        @foreach($barangays as $barangay)
-                                        <option value="{{$barangay->id}}">{{$barangay->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label label-checkbox">Header Type</label>
-                            <div class="col-sm-10 checkbox-radios">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="header_type" value="date"> Date
-                                        <span class="circle">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="header_type" value="age_monthly"> Age By Month
-                                        <span class="circle">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="header_type" value="age_yearly"> Age by Year
-                                        <span class="circle">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="header_type" value="quarterly"> Quarterly
-                                        <span class="circle">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label label-checkbox">Other Options</label>
-                            <div class="col-sm-10 checkbox-radios">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="with_gender"> With Gender
-                                        <span class="form-check-sign">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="with_trans"> With Transgender
-                                        <span class="form-check-sign">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="with_target"> With Target
-                                        <span class="form-check-sign">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="with_total"> With Total
-                                        <span class="form-check-sign">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="with_icd_code"> With ICD CODE
-                                        <span class="form-check-sign">
-                                            <span class="check"></span>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label">Questionnaires</label>
-                            <div class="col-sm-10">
-                                <div class="form-group bmd-form-group">
-                                    <select multiple class="form-control selectpicker" data-live-search="true" data-style="btn btn-link" name="questions[]">
-                                        @foreach($questions as $question)
-                                        <option value="{{$question->id}}">{{$question->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-fill btn-rose">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+		<div class="col-lg-12 col-md-12">
+			<div class="card">
+				<div class="card-header card-header-rose card-header-icon">
+					<div class="card-icon">
+						<i class="material-icons">apps</i>
+					</div>
+					<h4 class="card-title">Program Form</h4>
+				</div>
+				<div class="card-body">
+					<form method="POST" action="{{ route('programs.store') }}" class="form-horizontal">
+						@csrf
+						<div class="row">
+							<label class="col-sm-2 col-form-label">Program Name</label>
+							<div class="col-sm-10">
+								<div class="form-group bmd-form-group">
+									<input type="text" class="form-control" name="name">
+									<span class="bmd-help">Name of the program i.e. Feeding Program</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<label class="col-sm-2 col-form-label">Barangay</label>
+							<div class="col-sm-10">
+								<div class="form-group bmd-form-group">
+									<select class="form-control" data-style="btn btn-link" name="barangay">
+										@foreach($barangays as $barangay)
+										<option value="{{$barangay->id}}">{{$barangay->name}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<label class="col-sm-2 col-form-label label-checkbox">Header Type</label>
+							<div class="col-sm-10 checkbox-radios">
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="radio" name="header_type" value="date"> Date
+										<span class="circle">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="radio" name="header_type" value="age_monthly"> Age By Month
+										<span class="circle">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="radio" name="header_type" value="age_yearly"> Age by Year
+										<span class="circle">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="radio" name="header_type" value="quarterly"> Quarterly
+										<span class="circle">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<label class="col-sm-2 col-form-label label-checkbox">Other Options</label>
+							<div class="col-sm-10 checkbox-radios">
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="checkbox" name="with_gender"> With Gender
+										<span class="form-check-sign">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="checkbox" name="with_trans"> With Transgender
+										<span class="form-check-sign">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="checkbox" name="with_target"> With Target
+										<span class="form-check-sign">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="checkbox" name="with_total"> With Total
+										<span class="form-check-sign">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input class="form-check-input" type="checkbox" name="with_icd_code"> With ICD CODE
+										<span class="form-check-sign">
+											<span class="check"></span>
+										</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-fill btn-rose">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 @endsection
