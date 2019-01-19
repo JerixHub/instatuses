@@ -256,6 +256,7 @@ Add New Program Answer
 					$('.datetimepicker').datetimepicker({
 						format: 'YYYY-MM-DD HH:mm:ss'
 					});
+					$('.selectpicker').selectpicker();
 				}
 			});
 

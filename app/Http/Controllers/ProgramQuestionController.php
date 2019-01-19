@@ -44,14 +44,36 @@ class ProgramQuestionController extends Controller
     public function store(Request $request)
     {
 
-        $program_questions = ProgramQuestion::whereYear('created_at', date('Y', strtotime($request->created_at)))
-                                            ->whereMonth('created_at', date('m', strtotime($request->created_at)))
-                                            ->where('program_id',$request->program)
-                                            ->where('question_id', $request->question)
-                                            ->get();
+        $selected_program = Program::find($request->program);
+        if($selected_program->header_type == 'date'){
+            $program_questions = ProgramQuestion::whereYear('created_at', date('Y', strtotime($request->created_at)))
+                                                ->whereMonth('created_at', date('m', strtotime($request->created_at)))
+                                                ->where('program_id',$request->program)
+                                                ->where('question_id', $request->question)
+                                                ->get();
 
-        if(count($program_questions) > 0){
-            return redirect()->back()->with('msg', 'The program answer already exists in database, check the selected date if it already exists');
+            if(count($program_questions) > 0){
+                return redirect()->back()->with('msg', 'The program answer already exists in database, check the selected date if it already exists');
+            }
+        }elseif($selected_program->header_type == 'quarterly'){
+            $program_questions = ProgramQuestion::whereYear('created_at', date('Y', strtotime($request->created_at)))
+                                                ->where('program_id',$request->program)
+                                                ->where('question_id', $request->question)
+                                                ->get();
+
+            if(count($program_questions) > 0){
+                return redirect()->back()->with('msg', 'The program answer already exists in database, check the selected date if it already exists');
+            }
+        }elseif($selected_program->header_type == 'age_monthly'){
+            $program_questions = ProgramQuestion::whereYear('created_at', date('Y', strtotime($request->created_at)))
+                                                ->whereMonth('created_at', date('m', strtotime($request->created_at)))
+                                                ->where('program_id',$request->program)
+                                                ->where('question_id', $request->question)
+                                                ->get();
+
+            if(count($program_questions) > 0){
+                return redirect()->back()->with('msg', 'The program answer already exists in database, check the selected date if it already exists');
+            }
         }
 
         $program_answer = new ProgramQuestion;
@@ -106,7 +128,10 @@ class ProgramQuestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
+        $program_answers = Program::all();
+        $program_questions = Question::all();
+        return view('admin.programquestion.edit', compact('programs', 'program_answers','program_questions'));
     }
 
     /**
@@ -129,7 +154,12 @@ class ProgramQuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $program_question = ProgramQuestion::find($id);
+        $program_question->delete();
+
+        return response()->json([
+            'success' => 'Record has been deleted successfully!'
+        ]);
     }
 
     public function getSelectedProgram($id)
@@ -184,6 +214,16 @@ class ProgramQuestionController extends Controller
                                 </div>
                             </div>';
                 }
+            }else{
+                $html .= '<div class="row">
+                            <label class="col-sm-2 col-form-label">Answer</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                    <input type="number" class="form-control" name="general_answer" min="0" value="0">
+                                    <span class="bmd-help">Required to have atleast 0 value</span>
+                                </div>
+                            </div>
+                        </div>';
             }
 
             if($program->with_target){
@@ -208,43 +248,146 @@ class ProgramQuestionController extends Controller
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-2 col-form-label">1st Quarter</label>
+                            <label class="col-sm-2 col-form-label">Quarter</label>
                             <div class="col-sm-10">
                                 <div class="form-group bmd-form-group">
-                                    <input type="number" class="form-control" name="first_q" min="0" value="0">
+                                <select class="form-control selectpicker" title="Choose Quarter" data-style="btn btn-link" name="quarter">
+                                    <option value="first">First Quarter</option>
+                                    <option value="second">Second Quarter</option>
+                                    <option value="third">Third Quarter</option>
+                                    <option value="fourth">Fourth Quarter</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>';
+            if($program->with_gender){
+                $html .= '<div class="row">
+                            <label class="col-sm-2 col-form-label">Male/s</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                    <input type="number" class="form-control" name="m" min="0" value="0">
                                     <span class="bmd-help">Required to have atleast 0 value</span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-2 col-form-label">2nd Quarter</label>
+                            <label class="col-sm-2 col-form-label">Female/s</label>
                             <div class="col-sm-10">
                                 <div class="form-group bmd-form-group">
-                                    <input type="number" class="form-control" name="second_q" min="0" value="0">
-                                    <span class="bmd-help">Required to have atleast 0 value</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label">3rd Quarter</label>
-                            <div class="col-sm-10">
-                                <div class="form-group bmd-form-group">
-                                    <input type="number" class="form-control" name="third_q" min="0" value="0">
-                                    <span class="bmd-help">Required to have atleast 0 value</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label">4th Quarter</label>
-                            <div class="col-sm-10">
-                                <div class="form-group bmd-form-group">
-                                    <input type="number" class="form-control" name="fourth_q" min="0" value="0">
+                                    <input type="number" class="form-control" name="f" min="0" value="0">
                                     <span class="bmd-help">Required to have atleast 0 value</span>
                                 </div>
                             </div>
                         </div>';
+                if($program->with_trans){
+                    $html .= '<div class="row">
+                                <label class="col-sm-2 col-form-label">Transgender/s</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group bmd-form-group">
+                                        <input type="number" class="form-control" name="t" min="0" value="0">
+                                        <span class="bmd-help">Required to have atleast 0 value</span>
+                                    </div>
+                                </div>
+                            </div>';
+                }
+            }else{
+                $html .= '<div class="row">
+                            <label class="col-sm-2 col-form-label">Answer</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                    <input type="number" class="form-control" name="general_answer" min="0" value="0">
+                                    <span class="bmd-help">Required to have atleast 0 value</span>
+                                </div>
+                            </div>
+                        </div>';
+            }
+            if($program->with_target){
+                $html .= '<div class="row">
+                            <label class="col-sm-2 col-form-label">Target</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                    <input type="number" class="form-control" name="target" min="0" value="0">
+                                    <span class="bmd-help">Required to have atleast 0 value</span>
+                                </div>
+                            </div>
+                        </div>';
+            }
         }elseif($program->header_type == 'age_monthly'){
-
+            $html .= '<div class="row">
+                            <label class="col-sm-2 col-form-label">Selected Date</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                    <input type="text" class="form-control datetimepicker" name="created_at">
+                                    <span class="bmd-help">Select the date you want this answer to be set</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label">Quarter</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                <select class="form-control selectpicker" title="Choose Age Range" data-style="btn btn-link" name="age_range">
+                                    <option value="under_one">Under 1</option>
+                                    <option value="one_four">1-4</option>
+                                    <option value="five_nine">5-9</option>
+                                    <option value="ten_fourteen">10-14</option>
+                                    <option value="fifteen_nineteen">15-19</option>
+                                    <option value="twenty_twentyfour">20-24</option>
+                                    <option value="twentyfive_twentynine">25-29</option>
+                                    <option value="thirty_thirtyfour">30-34</option>
+                                    <option value="thirtyfive_thirtynine">35-39</option>
+                                    <option value="fourty_fourtyfour">40-44</option>
+                                    <option value="fourtyfive_fourtynine">45-49</option>
+                                    <option value="fifty_fiftyfour">50-54</option>
+                                    <option value="fiftyfive_fiftynine">55-59</option>
+                                    <option value="sixty_sixtyfour">60-64</option>
+                                    <option value="sixtyfive_sixtynine">65-69</option>
+                                    <option value="seventy_above">70 & Above</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>';
+            if($program->with_gender){
+                $html .= '<div class="row">
+                            <label class="col-sm-2 col-form-label">Male/s</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                    <input type="number" class="form-control" name="m" min="0" value="0">
+                                    <span class="bmd-help">Required to have atleast 0 value</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label">Female/s</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                    <input type="number" class="form-control" name="f" min="0" value="0">
+                                    <span class="bmd-help">Required to have atleast 0 value</span>
+                                </div>
+                            </div>
+                        </div>';
+                if($program->with_trans){
+                    $html .= '<div class="row">
+                                <label class="col-sm-2 col-form-label">Transgender/s</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group bmd-form-group">
+                                        <input type="number" class="form-control" name="t" min="0" value="0">
+                                        <span class="bmd-help">Required to have atleast 0 value</span>
+                                    </div>
+                                </div>
+                            </div>';
+                }
+            }else{
+                $html .= '<div class="row">
+                            <label class="col-sm-2 col-form-label">Answer</label>
+                            <div class="col-sm-10">
+                                <div class="form-group bmd-form-group">
+                                    <input type="number" class="form-control" name="general_answer" min="0" value="0">
+                                    <span class="bmd-help">Required to have atleast 0 value</span>
+                                </div>
+                            </div>
+                        </div>';
+            }
         }
         $html .= '</div>';
         return $html;

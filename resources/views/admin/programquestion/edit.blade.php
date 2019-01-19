@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('title')
-Program Questions Masterlist
+Edit Program Answer
 @endsection
 
 @section('sidenav')
@@ -108,18 +108,17 @@ Program Questions Masterlist
 @endsection
 
 @section('navbar')
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
 	<div class="container-fluid">
-        <div class="navbar-minimize">
+		<div class="navbar-minimize">
 			<button id="minimizeSidebar" class="btn btn-just-icon btn-white btn-fab btn-round">
 				<i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
 				<i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
 				<div class="ripple-container"></div>
-            </button>
+			</button>
 		</div>
 		<div class="navbar-wrapper">
-			<a class="navbar-brand" href="#">Program Answers Masterlist</a>
+			<a class="navbar-brand" href="#">Programs Masterlist</a>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="sr-only">Toggle navigation</span>
@@ -178,114 +177,89 @@ Program Questions Masterlist
 		</div>
 	</div>
 </nav>
-<!-- End Navbar -->
 @endsection
 
 @section('content')
 <div class="container-fluid">
 	<div class="row">
-        <div class="col-lg-12 col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <a href="/admin/program-questions/create" class="btn btn-info">
-						<i class="material-icons">contact_support</i> Add New Program Answers
-					</a>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
-                            <thead class=" text-primary">
-                                <tr>
-                                    <th>Program Name</th>
-                                    <th>Barangay</th>
-                                    <th>Questions</th>
-                                    <th>M</th>
-                                    <th>F</th>
-                                    <th>T</th>
-                                    <th>1st Quarter</th>
-                                    <th>2nd Quarter</th>
-                                    <th>3rd Quarter</th>
-                                    <th>4th Quarter</th>
-                                    <th>Target</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($program_questions as $program_question)
-                                <tr>
-                                    <td>{{$program_question->program->name}}</td>
-                                    <td>{{$program_question->program->barangay->name}}</td>
-                                    <td>{{$program_question->question->name}}</td>
-                                    <td>{{$program_question->m}}</td>
-                                    <td>{{$program_question->f}}</td>
-                                    <td>{{$program_question->t}}</td>
-                                    <td>{{$program_question->first_q}}</td>
-                                    <td>{{$program_question->second_q}}</td>
-                                    <td>{{$program_question->third_q}}</td>
-                                    <td>{{$program_question->fourth_q}}</td>
-                                    <td>{{$program_question->target}}</td>
-                                    <td>{{$program_question->created_at->format('F Y')}}</td>
-                                    <td class="td-actions">
-                                        <a href="/admin/program-questions/{{$program_question->id}}/edit" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </a>
-                                        <a href="#" class="btn btn-danger btn-link btn-sm destroy-program-question" data-id="{{$program_question->id}}" data-token="{{csrf_token()}}">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<div class="col-lg-12 col-md-12">
+			@if(session()->has('msg'))
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<i class="material-icons">close</i>
+				</button>
+				<span>
+					<b> Failed! </b> {{ session()->get('msg') }}
+				</span>
+			</div>
+			@endif
+			<div class="card">
+				<div class="card-header card-header-rose card-header-icon">
+					<div class="card-icon">
+						<i class="material-icons">apps</i>
+					</div>
+					<h4 class="card-title">Program Answer Form</h4>
+				</div>
+				<div class="card-body">
+					<form method="POST" action="{{ route('program-questions.store') }}" class="form-horizontal">
+						@csrf
+						<div class="row">
+							<label class="col-sm-2 col-form-label">Program</label>
+							<div class="col-sm-10">
+								<div class="form-group bmd-form-group">
+									<select class="form-control selectpicker" title="Choose Program" data-style="btn btn-link" name="program" data-token="{{csrf_token()}}">
+										@foreach($program_answers as $program_answer)
+										<option value="{{$program_answer->id}}">{{$program_answer->name}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row question-row">
+							<label class="col-sm-2 col-form-label">Questions</label>
+							<div class="col-sm-10">
+								<div class="form-group bmd-form-group">
+									<select class="form-control selectpicker" data-style="btn btn-link" name="question">
+										@foreach($program_questions as $program_question)
+										<option value="{{$program_question->id}}">{{$program_question->name}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-fill btn-rose">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 @endsection
 
 @section('script')
 <script>
-    $(document).ready(function(){
-        $('.destroy-program-question').on('click', function(){
-            var id = $(this).data('id');
-            var token = $(this).data('token');
-            var dom = $(this).closest('tr');
-            swal({
-                title:"Are you sure?",
-                text: "You won't be able to revert this!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#e53935',
-                cancelButtonColor: '#26c6da',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if(result.value){
-                    $.ajax({
-                        url: "/admin/program-questions/"+id,
-                        type: 'DELETE',
-                        dataType: 'json',
-                        data: {
-                            "id": id,
-                            "_method": "DELETE",
-                            "_token": token,
-                        },
-                        success: function(data)
-                        {
-                            swal({
-                                title: 'Deleted!',
-                                text: data['success'],
-                                type: 'success',
-                                timer: 1500
-                            });
-                            dom.fadeOut();
-                        }
-                    });
-                }
-            });
-        });
-    });
+	$(document).ready(function(){
+		$('select[name=program]').on('change', function(){
+			$('.additional-forms').remove();
+			var id = $(this).val();
+			var token = $(this).data('token');
+			$.ajax({
+				method: "GET",
+				url: '/admin/get-selected-program/'+id,
+				data:{
+					"id": id,
+					"_method": "GET",
+					"_token": token,
+				},
+				success: function($data){
+					$('.question-row').after($data['data']);
+					$('.datetimepicker').datetimepicker({
+						format: 'YYYY-MM-DD HH:mm:ss'
+					});
+				}
+			});
+
+		});
+	});
 </script>
 @endsection

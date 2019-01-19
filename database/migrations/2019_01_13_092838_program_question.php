@@ -22,11 +22,9 @@ class ProgramQuestion extends Migration
             $table->integer('m')->nullable();
             $table->integer('f')->nullable();
             $table->integer('t')->nullable();
-            $table->integer('first_q')->nullable();
-            $table->integer('second_q')->nullable();
-            $table->integer('third_q')->nullable();
-            $table->integer('fourth_q')->nullable();
-            $table->integer('target')->nullable();
+            $table->enum('quarter', ['first','second','third','fourth']);
+            $table->enum('age_range', ['under_one', 'one_four', 'five_nine', 'ten_fourteen', 'fifteen_nineteen', 'twenty_twentyfour', 'twentyfive_twentynine', 'thirty_thirtyfour', 'thirtyfive_thirtynine', 'fourty_fourtyfour', 'fourtyfive_fourtynine', 'fifty_fiftyfour', 'fiftyfive_fiftynine', 'sixty_sixtyfour', 'sixtyfive_sixtynine', 'seventy_above']);
+            $table->integer('general_answer')->nullable();
             $table->timestamps();
         });
     }
