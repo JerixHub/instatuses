@@ -20,6 +20,7 @@ Route::get('/wait-for-confirmation', 'WelcomeController@waitConfirmation')->name
 Route::get('/about-us', function(){
 	return view('about');
 });
+Route::get('/contact-us', 'ContactController@index')->name('contact');
 Route::get('/learn-more', function(){
 	return view('learn');
 });
