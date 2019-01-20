@@ -213,7 +213,6 @@ class ProgramController extends Controller
 		$is_first_target = 0;
 		if($selected_program->header_type == 'date'){
 			$program_questions = ProgramQuestion::with(['question','answers'])->where('program_id', $program)->orderBy('priority','ASC')->get();
-			
 			if($selected_program->with_gender){
 				if($selected_program->with_trans){
 					foreach ($program_questions as $program_question) {
@@ -229,14 +228,11 @@ class ProgramController extends Controller
 								$irings[$countarr][] = $answer->target;
 							}
 
-							$total_male
-
 							$irings[$countarr][] = $answer->m;
 							$irings[$countarr][] = $answer->f;
 							$irings[$countarr][] = $answer->t;
 
 							$is_first_target = 0;
-
 						}
 						
 						$countarr++;
