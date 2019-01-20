@@ -141,7 +141,7 @@
             <div class="card-body">
                 <ul>
                     <li><a href="/about-us"><i class="fas fa-user-secret"></i> About us</a></li>
-                    <li><a href="/about-us"><i class="fas fa-phone"></i> Contact Us</a></li>
+                    <li><a href="/contact-us"><i class="fas fa-phone"></i> Contact Us</a></li>
                     <li><p class="text-danger">&copy; 2018 tag's creative</p></li>
                 </ul>
             </div>
