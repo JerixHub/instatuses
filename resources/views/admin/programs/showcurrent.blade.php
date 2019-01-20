@@ -246,14 +246,7 @@
 							<table class="table table-striped table-bordered table-hover" id="datatables">
 								{!! $header !!}
 							<tbody>
-								@foreach($questions as $question)
-								<tr>
-									<td>{{$question->name}}</td>
-									@if($current_program->with_gender && $current_program->with_trans)
-
-									@endif
-								</tr>
-								@endforeach
+								{!! $body !!}
 							</tbody>
 						</table>
 					</div>

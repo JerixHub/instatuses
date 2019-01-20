@@ -185,8 +185,8 @@ class ProgramController extends Controller
 		}
 
 		$header = $this->getTableHeader($current_program);
-        $questions = ProgramQuestion::with('question')->where('program_id', $program)->whereYear('created_at', date('Y'))->get();
-        
+        $body = $this->getTableBody($program);
+
 		$answers = $current_program->answers;
 		$random_question = ProgramQuestion::with('question')->where('program_id', $program)->whereYear('created_at', date('Y'))->inRandomOrder()->first();
 		$random_question = $random_question->question;
@@ -199,9 +199,129 @@ class ProgramController extends Controller
 			'is_admin',
 			'header',
 			'answers',
-			'questions',
+			'body',
 			'random_question')
 		);
+	}
+
+	public function getTableBody($program){
+		$selected_program = Program::find($program);
+
+		$irings = [];
+		$countarr = 0;
+		$html = '';
+		$is_first_target = 0;
+		if($selected_program->header_type == 'date'){
+			$program_questions = ProgramQuestion::with(['question','answers'])->where('program_id', $program)->orderBy('priority','ASC')->get();
+			
+			if($selected_program->with_gender){
+				if($selected_program->with_trans){
+					foreach ($program_questions as $program_question) {
+						$irings[$countarr][] = $program_question->question->name;
+
+						if($selected_program->with_target){
+							$is_first_target = 1;
+						}else{
+							$is_first_target = 0;
+						}
+						foreach ($program_question->answers as $answer) {
+							if($is_first_target == 1){
+								$irings[$countarr][] = $answer->target;
+							}
+
+							$total_male
+
+							$irings[$countarr][] = $answer->m;
+							$irings[$countarr][] = $answer->f;
+							$irings[$countarr][] = $answer->t;
+
+							$is_first_target = 0;
+
+						}
+						
+						$countarr++;
+					}
+					foreach ($irings as $key => $value) {
+						$html .= '<tr>';
+						foreach ($value as $k => $v) {
+							$html .= '<td>'.$v.'</td>';
+						}
+						$html .= '</tr>';
+					}
+				}else{
+					foreach ($program_questions as $program_question) {
+						$irings[$countarr][] = $program_question->question->name;
+
+						if($selected_program->with_target){
+							$is_first_target = 1;
+						}else{
+							$is_first_target = 0;
+						}
+						foreach ($program_question->answers as $answer) {
+							if($is_first_target == 1){
+								$irings[$countarr][] = $answer->target;
+							}
+							$irings[$countarr][] = $answer->m;
+							$irings[$countarr][] = $answer->f;
+						}
+						$countarr++;
+					}
+					foreach ($irings as $key => $value) {
+						$html .= '<tr>';
+						foreach ($value as $k => $v) {
+							$html .= '<td>'.$v.'</td>';
+						}
+						$html .= '</tr>';
+					}
+				}
+			}
+
+			// foreach ($program_questions as $program_question) {
+	  //       	$question = Question::find($program_question->question_id);
+
+	  //       	if($selected_program->with_gender){
+	  //       		if($selected_program->with_trans){
+	  //       			$to_array = array(
+		 //        			'question' => $question->name,
+		 //        			'answer'	=> array(
+		 //        				'date'	   => $program_question->created_at,
+		 //        				'm'		   => $program_question->m,
+		 //        				'f'		   => $program_question->f,
+		 //        				't'		   => $program_question->t
+		 //        			),
+		 //        		);
+		 //        		array_push($multi_array, $to_array);
+	  //       		}else{
+	  //       			$to_array = array(
+		 //        			'question' => $question->name,
+		 //        			'answer'	=> array(
+		 //        				'date'	   => $program_question->created_at,
+		 //        				'm'		   => $program_question->m,
+		 //        				'f'		   => $program_question->f,
+		 //        			),
+		 //        		);
+		 //        		array_push($multi_array, $to_array);
+	  //       		}
+			// 	}
+
+	  //       }
+
+	  //       dd($multi_array);
+
+			
+
+			
+	        
+
+	        
+		}elseif($selected_program->header_type == 'quarterly'){
+
+		}elseif($selected_program->header_type == 'age_monthly'){
+
+		}
+
+		return $html;
+		
 	}
 
 	public function getTableHeader($current_program){

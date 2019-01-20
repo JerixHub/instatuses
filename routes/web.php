@@ -35,6 +35,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
     Route::resource('/questions','QuestionController');
     Route::resource('/targets', 'TargetClientController');
     Route::resource('/program-questions', 'ProgramQuestionController');
+    Route::resource('/program-answers', 'ProgramAnswerController');
     Route::get('/get-selected-program/{program}', 'ProgramQuestionController@getSelectedProgram');
 	Route::patch('/users/approve/{user}', 'UserController@approveUser')->name('users.approve');
 	Route::get('/programs/{program}/{barangay}/{user}', 'ProgramController@showCurrentProgram')->name('show.current.program');

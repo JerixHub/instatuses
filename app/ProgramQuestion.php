@@ -17,4 +17,9 @@ class ProgramQuestion extends Model
     {
     	return $this->hasOne('App\Question', 'id', 'question_id');
     }
+
+    public function answers()
+    {
+    	return $this->hasMany('App\Answer');
+    }
 }

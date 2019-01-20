@@ -88,10 +88,16 @@ Program Questions Masterlist
 <li class="nav-item active">
 	<a class="nav-link" href="/admin/program-questions">
 		<i class="material-icons">code</i>
-		<p>Program Answers</p>
+		<p>Program Questions</p>
 	</a>
 </li>
 @endif
+<li class="nav-item">
+	<a class="nav-link" href="/admin/program-answers">
+		<i class="material-icons">code</i>
+		<p>Program Answer</p>
+	</a>
+</li>
 <li class="nav-item">
 	<a class="nav-link" href="/admin/settings">
 		<i class="material-icons">bubble_chart</i>
@@ -119,7 +125,7 @@ Program Questions Masterlist
             </button>
 		</div>
 		<div class="navbar-wrapper">
-			<a class="navbar-brand" href="#">Program Answers Masterlist</a>
+			<a class="navbar-brand" href="#">Program Questions Masterlist</a>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="sr-only">Toggle navigation</span>
@@ -182,13 +188,13 @@ Program Questions Masterlist
 @endsection
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid" style="min-height: 80vh;">
 	<div class="row">
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/program-questions/create" class="btn btn-info">
-						<i class="material-icons">contact_support</i> Add New Program Answers
+						<i class="material-icons">contact_support</i> Add New Program Question
 					</a>
                 </div>
                 <div class="card-body">
@@ -197,17 +203,8 @@ Program Questions Masterlist
                             <thead class=" text-primary">
                                 <tr>
                                     <th>Program Name</th>
-                                    <th>Barangay</th>
-                                    <th>Questions</th>
-                                    <th>M</th>
-                                    <th>F</th>
-                                    <th>T</th>
-                                    <th>1st Quarter</th>
-                                    <th>2nd Quarter</th>
-                                    <th>3rd Quarter</th>
-                                    <th>4th Quarter</th>
-                                    <th>Target</th>
-                                    <th>Date</th>
+                                    <th>Question</th>
+                                    <th>Priority</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -215,17 +212,8 @@ Program Questions Masterlist
                                 @foreach($program_questions as $program_question)
                                 <tr>
                                     <td>{{$program_question->program->name}}</td>
-                                    <td>{{$program_question->program->barangay->name}}</td>
                                     <td>{{$program_question->question->name}}</td>
-                                    <td>{{$program_question->m}}</td>
-                                    <td>{{$program_question->f}}</td>
-                                    <td>{{$program_question->t}}</td>
-                                    <td>{{$program_question->first_q}}</td>
-                                    <td>{{$program_question->second_q}}</td>
-                                    <td>{{$program_question->third_q}}</td>
-                                    <td>{{$program_question->fourth_q}}</td>
-                                    <td>{{$program_question->target}}</td>
-                                    <td>{{$program_question->created_at->format('F Y')}}</td>
+                                    <td>{{$program_question->priority}}</td>
                                     <td class="td-actions">
                                         <a href="/admin/program-questions/{{$program_question->id}}/edit" class="btn btn-primary btn-link btn-sm">
                                             <i class="material-icons">edit</i>

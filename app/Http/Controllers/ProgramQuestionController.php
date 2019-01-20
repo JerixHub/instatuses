@@ -18,7 +18,7 @@ class ProgramQuestionController extends Controller
     public function index()
     {
         $programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
-        $program_questions = ProgramQuestion::with(['program', 'question'])->orderBy('created_at', 'desc')->get();
+        $program_questions = ProgramQuestion::with(['program', 'question'])->orderBy('priority', 'ASC')->get();
         return view('admin.programquestion.index', compact('programs', 'program_questions'));
     }
 
@@ -44,69 +44,22 @@ class ProgramQuestionController extends Controller
     public function store(Request $request)
     {
 
-        $selected_program = Program::find($request->program);
-        if($selected_program->header_type == 'date'){
-            $program_questions = ProgramQuestion::whereYear('created_at', date('Y', strtotime($request->created_at)))
-                                                ->whereMonth('created_at', date('m', strtotime($request->created_at)))
-                                                ->where('program_id',$request->program)
-                                                ->where('question_id', $request->question)
-                                                ->get();
-
-            if(count($program_questions) > 0){
-                return redirect()->back()->with('msg', 'The program answer already exists in database, check the selected date if it already exists');
-            }
-        }elseif($selected_program->header_type == 'quarterly'){
-            $program_questions = ProgramQuestion::whereYear('created_at', date('Y', strtotime($request->created_at)))
-                                                ->where('program_id',$request->program)
-                                                ->where('question_id', $request->question)
-                                                ->get();
-
-            if(count($program_questions) > 0){
-                return redirect()->back()->with('msg', 'The program answer already exists in database, check the selected date if it already exists');
-            }
-        }elseif($selected_program->header_type == 'age_monthly'){
-            $program_questions = ProgramQuestion::whereYear('created_at', date('Y', strtotime($request->created_at)))
-                                                ->whereMonth('created_at', date('m', strtotime($request->created_at)))
-                                                ->where('program_id',$request->program)
-                                                ->where('question_id', $request->question)
-                                                ->get();
-
-            if(count($program_questions) > 0){
-                return redirect()->back()->with('msg', 'The program answer already exists in database, check the selected date if it already exists');
-            }
+        $checker = ProgramQuestion::where('priority', $request->priority)->where('program_id', $request->program)->count();
+        $check_redundant_question = ProgramQuestion::where('program_id', $request->program)->where('question_id', $request->question)->count();
+        if ($checker > 0) {
+            return redirect()->back()->with('msg', 'The program priority needs to be unique');
+        }
+        if($check_redundant_question > 0){
+            return redirect()->back()->with('msg', 'The program question already exists in database');
         }
 
-        $program_answer = new ProgramQuestion;
-        $program_answer->program_id = $request->program;
-        $program_answer->question_id = $request->question;
-        $program_answer->created_at = $request->created_at;
-        if(array_key_exists('m', $request->all())){
-            $program_answer->m = $request->m;
-        }
-        if(array_key_exists('f', $request->all())){
-            $program_answer->f = $request->f;
-        }
-        if(array_key_exists('t', $request->all())){
-            $program_answer->t = $request->t;
-        }
-        if(array_key_exists('target', $request->all())){
-            $program_answer->target = $request->target;
-        }
-        if(array_key_exists('first_q', $request->all())){
-            $program_answer->first_q = $request->first_q;
-        }
-        if(array_key_exists('second_q', $request->all())){
-            $program_answer->second_q = $request->second_q;
-        }
-        if(array_key_exists('third_q', $request->all())){
-            $program_answer->third_q = $request->third_q;
-        }
-        if(array_key_exists('fourth_q', $request->all())){
-            $program_answer->fourth_q = $request->fourth_q;
-        }
-        $program_answer->save();
+        $program_question = new ProgramQuestion;
+        $program_question->program_id = $request->program;
+        $program_question->question_id = $request->question;
+        $program_question->priority = $request->priority;
+        $program_question->save();
 
-        return redirect('/admin/program-questions')->with('message', 'Successfully Added New Program Answer');
+        return redirect('/admin/program-questions')->with('message', 'Successfully Added New Program Question');
     }
 
     /**
@@ -131,7 +84,8 @@ class ProgramQuestionController extends Controller
         $programs = Program::where('barangay_id', Auth::user()->barangay_id)->get();
         $program_answers = Program::all();
         $program_questions = Question::all();
-        return view('admin.programquestion.edit', compact('programs', 'program_answers','program_questions'));
+        $current_program_question = ProgramQuestion::find($id);
+        return view('admin.programquestion.edit', compact('programs', 'program_answers','program_questions', 'current_program_question'));
     }
 
     /**
@@ -143,7 +97,13 @@ class ProgramQuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $current_program_question = ProgramQuestion::find($id);
+        $current_program_question->program_id = $request->program;
+        $current_program_question->question_id = $request->question;
+        $current_program_question->priority = $request->priority;
+        $current_program_question->save();
+
+        return redirect('/admin/program-questions')->with('message', 'Successfully Updated Program Question');
     }
 
     /**
@@ -164,7 +124,8 @@ class ProgramQuestionController extends Controller
 
     public function getSelectedProgram($id)
     {
-        $program = Program::find($id);
+        $program_question = ProgramQuestion::find($id);
+        $program = Program::find($program_question->program->id);
         $forms = $this->getForms($program);
         return response()->json([
             'data' => $forms
@@ -323,7 +284,7 @@ class ProgramQuestionController extends Controller
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-2 col-form-label">Quarter</label>
+                            <label class="col-sm-2 col-form-label">Age Range</label>
                             <div class="col-sm-10">
                                 <div class="form-group bmd-form-group">
                                 <select class="form-control selectpicker" title="Choose Age Range" data-style="btn btn-link" name="age_range">

@@ -93,13 +93,19 @@ Add New Program Question
 		<p>Programs Masterlist</p>
 	</a>
 </li>
-<li class="nav-item active">
+<li class="nav-item">
 	<a class="nav-link" href="/admin/program-questions">
 		<i class="material-icons">code</i>
-		<p>Program Answers</p>
+		<p>Program Questions</p>
 	</a>
 </li>
 @endif
+<li class="nav-item active">
+	<a class="nav-link" href="/admin/program-answers">
+		<i class="material-icons">bubble_chart</i>
+		<p>Program Answers</p>
+	</a>
+</li>
 <li class="nav-item">
 	<a class="nav-link" href="/admin/settings">
 		<i class="material-icons">bubble_chart</i>
@@ -209,37 +215,17 @@ Add New Program Question
 					<h4 class="card-title">Program Answer Form</h4>
 				</div>
 				<div class="card-body">
-					<form method="POST" action="{{ route('program-questions.store') }}" class="form-horizontal">
+					<form method="POST" action="{{ route('program-answers.store') }}" class="form-horizontal">
 						@csrf
-						<div class="row">
-							<label class="col-sm-2 col-form-label">Program</label>
+						<div class="row question-row">
+							<label class="col-sm-2 col-form-label">Program Question</label>
 							<div class="col-sm-10">
 								<div class="form-group bmd-form-group">
-									<select class="form-control selectpicker" data-style="btn btn-link" name="program" data-token="{{csrf_token()}}">
-										@foreach($program_answers as $program_answer)
-										<option value="{{$program_answer->id}}">{{$program_answer->name}}</option>
-										@endforeach
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<label class="col-sm-2 col-form-label">Question</label>
-							<div class="col-sm-10">
-								<div class="form-group bmd-form-group">
-									<select class="form-control selectpicker" data-style="btn btn-link" name="question">
+									<select class="form-control selectpicker" title="Choose Program Question" data-style="btn btn-link" name="program_question" data-token="{{csrf_token()}}">
 										@foreach($program_questions as $program_question)
-										<option value="{{$program_question->id}}">{{$program_question->name}}</option>
+										<option value="{{$program_question->id}}">{{$program_question->program->name}} - {{$program_question->question->name}}</option>
 										@endforeach
 									</select>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<label class="col-sm-2 col-form-label">Priority</label>
-							<div class="col-sm-10">
-								<div class="form-group bmd-form-group">
-									<input type="number" class="form-control" name="priority" value="1" min="1">
 								</div>
 							</div>
 						</div>
@@ -253,9 +239,9 @@ Add New Program Question
 @endsection
 
 @section('script')
-<!-- <script>
+<script>
 	$(document).ready(function(){
-		$('select[name=program]').on('change', function(){
+		$('select[name=program_question]').on('change', function(){
 			$('.additional-forms').remove();
 			var id = $(this).val();
 			var token = $(this).data('token');
@@ -278,5 +264,5 @@ Add New Program Question
 
 		});
 	});
-</script> -->
+</script>
 @endsection
